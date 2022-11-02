@@ -8,7 +8,7 @@ it must be able to let tile and enemy know about the level, when a level is load
 import Player from "./player.js";
 import Enemy from "./enemy.js";
 import Tile from "./tile.js";
-import { INITIAL_HEIGHT } from "./main.js";
+import { INITIAL_HEIGHT, INITIAL_WIDTH } from "./main.js";
 
 export default class Level{
     // props:
@@ -22,6 +22,7 @@ export default class Level{
         this.player = _player;
         this.playerStart = []; //array of jsons of start positions 
         this.scales = [];
+        this.offsets = [];
     }
     
     // methods: 
@@ -30,7 +31,7 @@ export default class Level{
         let data;
         try{
             const levelPromise = await fetch("../data/levels/levels.txt"); // promise kinda like a pipe that has a buffer
-            data = await (await levelPromise.text()).split('----'); // waits for promise to come and converts it into an array of strings
+            data = await (await levelPromise.text()).split('----\n'); // waits for promise to come and converts it into an array of strings
 
         } catch(err){
             console.error(err);
@@ -46,15 +47,38 @@ export default class Level{
             level["levelID"] = i;
             level["levelMatrix"] = levelRows;
             this.levels.push(level)
-            this.scales.push(INITIAL_HEIGHT/(levelRows.length - 1));
+            let [scale, xOff, yOff] = this.centre(levelRows.length - 1, levelRows.map(x => x.length).reduce((x, y) => Math.max(x, y), 0));
+            this.scales.push(scale);
+            this.offsets.push([xOff, yOff]);
         }
         console.log(this.scales);
         
     }
 
+    centre(rows, columns){
+        let scaleY = INITIAL_HEIGHT/rows;
+        let scaleX = INITIAL_WIDTH/columns;
+        let scale = Math.min(scaleY, scaleX);
+        let xOff = 0, yOff = 0;
+        if(scaleY < scaleX){ //centre on the x axis 
+            let width = scaleY * columns;
+            xOff = (INITIAL_WIDTH - width) / 2;
+        }else{
+            let height = scaleX * rows;
+            yOff = (INITIAL_HEIGHT - height) / 2;
+        }
+        console.log(scale, xOff, yOff);
+        return [scale, xOff, yOff]; //return scale and x and y offset 
+    }
+
+    resetForLoad(){
+        this.tiles = [];
+    }
+
     unpack(ctx){
         let levelMatrix = this.levels[this.currLevel].levelMatrix;
         let scale = this.scales[this.currLevel];
+        let offset = this.offsets[this.currLevel];
 
         for (let y = 0; y < levelMatrix.length; y++){
     
@@ -69,6 +93,7 @@ export default class Level{
                 switch (entity){
                     case 'S':
                         this.player.setPos([x,y]);
+                        this.player.setOffset(offset);
 
                         this.playerStart.push({x: x, y: x});
 
@@ -84,10 +109,13 @@ export default class Level{
                                         "collides":true,
                                         "ctx":ctx, 
                                         "spriteInfo":undefined,
-                                        "scale":scale
+                                        "scale":scale,
+                                        "xOff":offset[0],
+                                        "yOff":offset[1]
                                     };
                         t = new Tile(entityProp);
                         tiles.push(t)
+                        this.player.setEnd([x,y]);
                         break;
                     case '#':
                         console.log(`recognises #`);
@@ -98,7 +126,9 @@ export default class Level{
                                         "collides":true,
                                         "ctx":ctx, 
                                         "spriteInfo":undefined,
-                                        "scale":scale
+                                        "scale":scale,
+                                        "xOff":offset[0],
+                                        "yOff":offset[1]
                                     };
                         t = new Tile(entityProp);
                         tiles.push(t)
@@ -112,7 +142,9 @@ export default class Level{
                                         "collides":false,
                                         "ctx":ctx, 
                                         "spriteInfo":undefined,
-                                        "scale":scale
+                                        "scale":scale,
+                                        "xOff":offset[0],
+                                        "yOff":offset[1]
                                     };
                         t = new Tile(entityProp);
                         tiles.push(t);
@@ -130,7 +162,10 @@ export default class Level{
                                     "visible":true, 
                                     "collides":true,
                                     "ctx":ctx, 
-                                    "spriteInfo":undefined
+                                    "spriteInfo":undefined,
+                                    "scale":scale,
+                                    "xOff":offset[0],
+                                    "yOff":offset[1]
                                 };
                                 tiles.push(new Enemy(entityProp))
                         }    
@@ -141,11 +176,16 @@ export default class Level{
             
         }
         this.player.setGrid(this.tiles);
+        this.player.setProgress((ctx) => { this.incLevel(ctx); });
         console.log(this);
+        
     }
 
-    incLevel(){
+    incLevel(ctx){
+        console.log("IM CHANGIN THE FUCKING SATATE?>er>a?>ad>?SDa<LMKDNHSUB");
         this.currLevel += 1;
+        this.resetForLoad();
+        this.unpack(ctx);
     }
 
     resLevel(){
