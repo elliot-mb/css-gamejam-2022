@@ -5,22 +5,21 @@ it must be able to let tile and enemy know about the level, when a level is load
 */
 
 // have a level have all the levels and a a current loaded level
+import Player from "player.js"
+import Enemy from "enemy.js"
+import Tile from "tile.js"
 
-class level{
-
+export default class level{
     // props:
     //     levels[] //level files 
     //     tiles[] //array of tiles 
 
     constructor(){
-        this.levels = []; // array of json level objects e.g. {["levelID":0, ["#####","####0", ...], ....}
+        this.levels = []; // array of json level objects e.g. [{["levelID":0, "levelMatrix":["#####","####0", ...]}, {....}]
         this.tiles  = [];
         this.currLevel = 0;
-    }
 
-    
-    
-    
+    }
     
     // methods: 
     //     unpack(level file) //basically just makes an array of tiles according to the text file 
@@ -46,12 +45,39 @@ class level{
         }
     }
 
+    unpack(ctx){
+        let levelMatrix = this.levels[this.currLevel].levelMatrix
+
+        for (let y = 0; y < levelMatrix.length(); i++){
+    
+            let levelRow = levelMatrix.Split('\n');
+            let entityRow = [];
+
+            for (let x = 0; x < levelRow.length(); x++){
+                let entity = levelRow[y][x];
+                let properties = {};
+
+                switch (entity){
+                    case 'S':
+                        properties.push({"nametag":"codey"}, {"pos":[x,y]}, {"collides":false},{"ctx":ctx})//finish this
+                    case 'D':
+                    //case enemies
+                    default:
+                        if (entity.match(/([A-Z]\[S,D])/g)){
+                            //create death bar object
+                        }
+                        
+                }
+            }
+        }
+    }
+
     incLevel(){
-        this.level += 1;
+        this.currLevel += 1;
     }
 
     resLevel(){
-        this.level = 0;
+        this.currLevel = 0;
     }
     //     update() //updates level
 
@@ -59,4 +85,5 @@ class level{
 
 
 }
+
 
