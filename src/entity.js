@@ -18,6 +18,8 @@ export default class Entity {
         this.ctx = properties.ctx;
         this.spriteInfo = properties.spriteInfo;
         this.health = properties.health;
+        this.xOff = properties.xOff;
+        this.yOff = properties.yOff;
         //this.dims = properties.dims;
         //this.vel = properties.vel;        
         //this.camera = properties.camera;

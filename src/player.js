@@ -36,11 +36,15 @@ import Entity from "./entity.js";
 export default class Player extends Entity {
     constructor(_properties){
         super(_properties);
-        this.grid;
         this.lastMoved = 0;
         this.cooldown = 100;
         this.visualPos = [0,0];
         this.interp = 30;
+        
+        //properties defined after level is passed
+        this.grid;
+        this.end;
+        this.progress;
     }
 
     setPos(_pos){
@@ -49,6 +53,19 @@ export default class Player extends Entity {
 
     setGrid(_grid){
         this.grid = _grid;
+    }
+
+    setEnd(_end){
+        this.end = _end;
+    }
+
+    setProgress(progressCallback) {
+        this.progress = progressCallback;
+    }
+
+    setOffset(_offset){
+        this.xOff = _offset[0];
+        this.yOff = _offset[1];
     }
 
     coolingDown(ts){
@@ -99,13 +116,15 @@ export default class Player extends Entity {
     }
 
     update(dt){
-        this.visualPos[0] += (((this.pos[0] * this.scale) - this.visualPos[0]) / this.interp) * dt;
-        this.visualPos[1] += (((this.pos[1] * this.scale) - this.visualPos[1]) / this.interp) * dt;
+        this.visualPos[0] += (((this.pos[0] * this.scale) + this.xOff - this.visualPos[0]) / this.interp) * dt;
+        this.visualPos[1] += (((this.pos[1] * this.scale) + this.yOff - this.visualPos[1]) / this.interp) * dt;
+        console.log(this.xOff, this.yOff);
+        if(this.end[0] === this.pos[0] && this.end[1] === this.pos[1]) { this.progress(this.ctx); }  //here we pass level the necessary context to process the level change 
     }
 
     draw(c, ts){
         c.fillStyle = this.coolingDown(ts) ? "#920" : "#fff";
-        console.log(this.coolingDown(ts));
+        //console.log(this.coolingDown(ts));
         c.fillRect(this.visualPos[0], this.visualPos[1], this.scale, this.scale);
     }
 }

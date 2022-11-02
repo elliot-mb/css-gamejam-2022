@@ -26,8 +26,8 @@ export default class Tile extends Entity {
     }
 
     draw(c){
-        c.fillStyle = this.visible ? "#222" : "#0000";
-        c.fillRect(this.pos[0] * this.scale, this.pos[1] * this.scale, this.scale, this.scale);
+        c.fillStyle = this.visible ? (this.nametag === "End" ? "#2f2" : "#222" ) : "#0000";
+        c.fillRect((this.pos[0] * this.scale)  + this.xOff, (this.pos[1] * this.scale) + this.yOff, this.scale, this.scale);
         
     }
 }   
