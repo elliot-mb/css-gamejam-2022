@@ -161,8 +161,10 @@ export default class Level{
     }
 
     draw(c){
-        this.tiles.map(x => { x.map(y => {y.draw(c);}); });
-        this.player.draw(c);
+        this.tiles.map(x => { x.map(y => {
+            if(y.nametag !== "Ant") y.draw(c);
+        }); });
+        //this.player.draw(c);
 
     }
 
