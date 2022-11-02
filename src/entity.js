@@ -1,21 +1,11 @@
 /* TODO 
-props:
-
-    position 
-    health //tiles dubiously need health???
-    hitbox
-
 methods:
-    move() 
-    update()
-    animate()
     collide() //checks neighbours of entity (all entities are indexed on a grid)
     draw() 
 */
-
-const spriteDimensions = 16;
-const spriteAnimations = [];
-const staggerFrames = 15;
+const spriteDimensions = 16; //Dimension of each individual sprite
+const spriteAnimations = []; //Maps from name to frames
+const staggerFrames = 15; //Number of gameFrames between updates
 
 export default class Entity {
     constructor(properties){
@@ -26,6 +16,7 @@ export default class Entity {
         this.collides = properties.collides;
         this.ctx = properties.ctx;
         this.spriteInfo = properties.spriteInfo;
+        this.health = properties.health;
         //this.dims = properties.dims;
         //this.vel = properties.vel;        
         //this.camera = properties.camera;
@@ -51,20 +42,19 @@ export default class Entity {
 
     }
 
-    move() {
+    move() { //Done in enemy/player, tiles do not need to move
 
     }
 
-    update() {
+    update() { //same as move() 
 
     }
 
-    animate(anim, gameFrame) { //chooses the correct sprite to render
+    animate(anim, gameFrame) { //Takes in name of animation and gameFrame and draws the proper image at proper location
         let position = Math.floor(gameFrame/staggerFrames) % spriteAnimations[anim].loc.length;
         let frameX = spriteDimensions * position;
         let frameY = spriteAnimations[anim].loc[position].y
-
-        this.ctx.drawImage(this.spriteInfo.spriteSheet, frameX, frameY, spriteDimensions, spriteDimensions, 0,0, spriteDimensions, spriteDimensions);
+        this.ctx.drawImage(this.spriteInfo.spriteSheet, frameX, frameY, spriteDimensions, spriteDimensions, pos.x, pos.y, spriteDimensions, spriteDimensions);
 
     }
 
@@ -72,7 +62,7 @@ export default class Entity {
 
     }
 
-    collide() {
+    collide() { //idk
 
     }
     
