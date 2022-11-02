@@ -126,5 +126,6 @@ export default class Player extends Entity {
         c.fillStyle = this.coolingDown(ts) ? "#920" : "#fff";
         //console.log(this.coolingDown(ts));
         c.fillRect(this.visualPos[0], this.visualPos[1], this.scale, this.scale);
+        
     }
 }
