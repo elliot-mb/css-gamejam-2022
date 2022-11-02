@@ -46,20 +46,19 @@ export default class Entity {
 
     }
 
-    update() { //same as move() 
-
+    update(strategy) { //same as move() 
+        this.pos = strategy(pos)
     }
 
     animate(anim, gameFrame) { //Takes in name of animation and gameFrame and draws the proper image at proper location
         let position = Math.floor(gameFrame/staggerFrames) % spriteAnimations[anim].loc.length;
         let frameX = spriteDimensions * position;
         let frameY = spriteAnimations[anim].loc[position].y
-        this.ctx.drawImage(this.spriteInfo.spriteSheet, frameX, frameY, spriteDimensions, spriteDimensions, pos.x, pos.y, spriteDimensions, spriteDimensions);
-
+        this.draw(frameX, frameY);
     }
 
-    draw() { //renders the sprite 
-
+    draw() { //renders the sprite
+        this.ctx.drawImage(this.spriteInfo.spriteSheet, frameX, frameY, spriteDimensions, spriteDimensions, pos.x, pos.y, spriteDimensions, spriteDimensions);
     }
 
     collide() { //idk
