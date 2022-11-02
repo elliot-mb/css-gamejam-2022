@@ -57,35 +57,35 @@ let fsm = new StateMachine({
 let keyListener = {
     pressed: {}, //set of pressed keys
     methods: {
-        "a": () => {
-            player.move("l");
+        "a": (ts) => {
+            player.moveLeft(ts);
         },
-        "d": () => {
-            player.move("r");
+        "d": (ts) => {
+            player.moveRight(ts);
         },
-        "s": () => {
-            player.move("d");
+        "s": (ts) => {
+            player.moveDown(ts);
             try { fsm.visit(); } catch { }
         },
-        "w": () => {
-            player.move("u");
+        "w": (ts) => {
+            player.moveUp(ts);
         },
-        " ": () => { 
+        " ": (ts) => { 
             
         },
-        "Enter": () => {
+        "Enter": (ts) => {
             try { fsm.play(); } catch { }
         },
-        "Backspace": () => {
+        "Backspace": (ts) => {
             try { fsm.quit(); } catch { }
         }
     },
-    update: () => {
+    update: (timestamp) => {
         for(let k in keyListener.pressed) {
             let methodOrUndefined = keyListener.methods[k];
             
             if(methodOrUndefined){
-                methodOrUndefined();
+                methodOrUndefined(timestamp);
             }
         }
     }
@@ -115,7 +115,7 @@ const makeFrame = (timestamp) => {
     pt = timestamp;
     
     background.draw();
-    keyListener.update();
+    keyListener.update(timestamp);
 
     if (fsm.state === "game") level.draw(c);
     ui.draw(c);

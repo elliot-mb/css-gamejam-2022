@@ -37,6 +37,7 @@ export default class Player extends Entity {
     constructor(_properties){
         super(_properties);
         this.grid;
+        this.lastMoved = 0;
     }
 
     setPos(_pos){
@@ -47,41 +48,39 @@ export default class Player extends Entity {
         this.grid = _grid;
     }
 
-    move(direction){
-        switch(direction){
-            case "u":
-                this.moveUp();
-                break;
-            case "d":
-                this.moveDown();
-                break;
-            case "l":
-                this.pos[0]--;
-                break;
-            case "r":
-                this.pos[0]++;
-                break;
-            default:
-                console.error("not a direction "+direction);
-        }
-    }
-
     moveDown(){
         let y = this.pos[1];
-        console.log(this.grid);
-        while(this.grid[y][this.pos[0]].nametag !== "Wall" && y < this.grid.length){
+        while(this.grid[y + 1][this.pos[0]].nametag !== "Wall" && y < this.grid.length){
             y++;
         }
-        this.pos[1] = y - 1;
+        this.pos[1] = y;
     }
 
     moveUp(){
         let y = this.pos[1];
-        console.log(this.grid);
-        while(this.grid[y][this.pos[0]].nametag !== "Wall" && y >= 0){
+
+        while(this.grid[y - 1][this.pos[0]].nametag !== "Wall" && y >= 0){
             y--;
         }
-        this.pos[1] = y + 1;
+        this.pos[1] = y;
+    }
+
+    moveRight(){
+        let x = this.pos[0];
+ 
+        while(this.grid[this.pos[1]][x + 1].nametag !== "Wall" && x < this.grid[0].length - 1){
+            x++;
+        }
+        this.pos[0] = x;
+    }
+
+    moveLeft(){
+        let x = this.pos[0];
+
+        while(this.grid[this.pos[1]][x - 1].nametag !== "Wall" && x >= 0){
+            x--;
+        }
+        this.pos[0] = x;
     }
 
     draw(c){
