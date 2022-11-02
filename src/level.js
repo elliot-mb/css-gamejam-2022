@@ -95,7 +95,7 @@ export default class Level{
                         this.player.setPos([x,y]);
                         this.player.setOffset(offset);
 
-                        this.playerStart.push({x: x, y: x});
+                        this.playerStart.push({x: x, y: y});
 
                         this.player.scale = scale;
                         tiles.push(this.player);
