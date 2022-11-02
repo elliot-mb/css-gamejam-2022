@@ -1,11 +1,21 @@
+import Level from "./level.js";
+import Player from "./player.js";
 import UI from "./ui.js";
 
 let canvas = document.getElementById("canvas"); 
 let c = canvas.getContext("2d"); 
-const INITIAL_WIDTH = 1920;
-const INITIAL_HEIGHT = 1080;
+export const INITIAL_WIDTH = 1920;
+export const INITIAL_HEIGHT = 1080;
 
 const ui = new UI(); ui.toMenu();
+const player = new Player({
+    "nametag":"Ant", 
+    "pos":[0,0], 
+    "visible":true, 
+    "collides":true,
+    "ctx":c, 
+    "spriteInfo":undefined
+});
 
 let fsm = new StateMachine({
     init: 'menu',
@@ -43,13 +53,18 @@ let fsm = new StateMachine({
 let keyListener = {
     pressed: {}, //set of pressed keys
     methods: {
-        "a": () => {},
-        "d": () => {},
+        "a": () => {
+            player.move("l");
+        },
+        "d": () => {
+            player.move("r");
+        },
         "s": () => {
+            player.move("d");
             try { fsm.visit(); } catch { }
         },
         "w": () => {
-            
+            player.move("u");
         },
         " ": () => { 
             
@@ -91,6 +106,10 @@ let background = {
 let dt = 0;
 let pt = 0;
 
+let level = new Level(player);
+await level.parseLevel();
+level.unpack(c);
+
 const makeFrame = (timestamp) => {
     dt = timestamp - pt;
     pt = timestamp;
@@ -98,6 +117,7 @@ const makeFrame = (timestamp) => {
     background.draw();
     keyListener.update();
 
+    level.draw(c);
     ui.draw(c);
 
     requestAnimationFrame(makeFrame);

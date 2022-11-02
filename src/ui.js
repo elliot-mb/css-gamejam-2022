@@ -14,11 +14,11 @@ export default class UI{
         this.layout = (c) => {
             c.fillStyle = "#99f";
             c.font = this.header.h3;
-            c.fillText("Health", 40, 100);
-            c.fillText("Corruption", 450, 100);
-            c.fillText("$", 1050, 100);
+            c.fillText("Health", 10, 50);
+            c.fillText("Corruption", 425, 50);
+            c.fillText("$", 1025, 50);
             c.font = this.header.h4;
-            c.fillText("<- Backspace to abandon run", 40, 150);
+            c.fillText("<- Backspace to abandon run", 10, 1070);
         }
     }
 
@@ -50,15 +50,11 @@ export default class UI{
     toLose(){
         // 
         this.layout = (c) => {
-            c.fillStyle = "#fff";
+            c.fillStyle = "#f11";
             c.font = this.header.h1;
             c.fillText("You died", 40, 130);
             
         };
-    }
-
-    toGame(){
-
     }
 
     update(){

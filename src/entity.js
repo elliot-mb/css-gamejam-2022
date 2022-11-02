@@ -9,6 +9,7 @@ const staggerFrames = 15; //Number of gameFrames between updates
 
 export default class Entity {
     constructor(properties){
+        this.scale = properties.scale;
         this.nametag = properties.nametag;
         this.pos = properties.pos;
         this.visible = properties.visible;
@@ -25,19 +26,21 @@ export default class Entity {
         //this.grav = properties.grav; //is effected by gravity
         //this.simulated = properties.simulated;
         //this.drag = properties.drag;
-
-        this.spriteInfo.spriteStates.forEach((state, index) => {
+        if(this.spriteInfo){ 
+          this.spriteInfo.spriteStates.forEach((state, index) => {
             let frames = {
-                loc: [],
-            }
+                    loc: [],
+                }
 
-            for (let i = 0; i < state.frames; i++) {
-                let positionX = i * spriteDimensions;
-                let positionY = index * spriteDimensions;
-                frames.loc.push({x: positionX, y: positionY});
-            }
-            spriteAnimations[state.name] = frames;
-        });
+                for (let i = 0; i < state.frames; i++) {
+                    let positionX = i * spriteDimensions;
+                    let positionY = index * spriteDimensions;
+                    frames.loc.push({x: positionX, y: positionY});
+                }
+                spriteAnimations[state.name] = frames;
+            });  
+        }
+        
 
 
     }
