@@ -23,6 +23,11 @@ methods:
 
 */
 
-export default class Enemy {
+import Entity from "./entity.js";
 
+export default class Enemy extends Entity {
+    constructor(_properties){
+        super(_properties);
+    }
 }
+

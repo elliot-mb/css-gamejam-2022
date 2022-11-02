@@ -18,6 +18,16 @@ methods:
     draw() 
 */
 
-export default class Tile {
+import Entity from "./entity.js";
 
-}
+export default class Tile extends Entity {
+    constructor(_properties){
+        super(_properties);
+    }
+
+    draw(c){
+        c.fillStyle = this.visible ? "#222" : "#0000";
+        c.fillRect(this.pos[0] * this.scale, this.pos[1] * this.scale, this.scale, this.scale);
+        
+    }
+}   
