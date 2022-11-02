@@ -14,6 +14,7 @@ methods:
 
 const spriteDimensions = 16;
 const spriteAnimations = [];
+const staggerFrames = 15;
 
 export default class Entity {
     constructor(properties){
@@ -33,7 +34,7 @@ export default class Entity {
         //this.simulated = properties.simulated;
         //this.drag = properties.drag;
 
-        this.spriteInfo.array.forEach((state, index) => {
+        this.spriteInfo.spriteStates.forEach((state, index) => {
             let frames = {
                 loc: [],
             }
@@ -43,25 +44,30 @@ export default class Entity {
                 let positionY = index * spriteDimensions;
                 frames.loc.push({x: positionX, y: positionY});
             }
-            spriteAnimations[state.name] = frames
+            spriteAnimations[state.name] = frames;
         });
 
 
     }
 
-    move(target) {
-        
+    move() {
+
     }
 
     update() {
 
     }
 
-    animate() {
+    animate(anim, gameFrame) { //chooses the correct sprite to render
+        let position = Math.floor(gameFrame/staggerFrames) % spriteAnimations[anim].loc.length;
+        let frameX = spriteDimensions * position;
+        let frameY = spriteAnimations[anim].loc[position].y
+
+        this.ctx.drawImage(this.spriteInfo.spriteSheet, frameX, frameY, spriteDimensions, spriteDimensions, 0,0, spriteDimensions, spriteDimensions);
 
     }
 
-    draw() {
+    draw() { //renders the sprite 
 
     }
 
