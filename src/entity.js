@@ -1,6 +1,6 @@
 /* TODO 
 props:
-    ray 
+    ray  
     position 
     health //tiles dubiously need health???
     hitbox
