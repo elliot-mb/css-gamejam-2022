@@ -20,7 +20,7 @@ export default class Level{
         this.tiles  = [];
         this.currLevel = 0;
         this.player = _player;
-        this.playerStart = []; //array of strings of start positions 
+        this.playerStart = []; //array of jsons of start positions 
         this.scales = [];
     }
     
@@ -70,7 +70,7 @@ export default class Level{
                     case 'S':
                         this.player.setPos([x,y]);
 
-                        this.playerStart.push(`${x},${y}`);
+                        this.playerStart.push({x: x, y: x});
 
                         this.player.scale = scale;
                         tiles.push(this.player);
@@ -155,14 +155,15 @@ export default class Level{
 
     start(){
         console.log(this.playerStart[this.currLevel]);
-        let coords = this.playerStart[this.currLevel].split(",");
-        this.player.setPos([coords[0], coords[1]]);
+        let coords = this.playerStart[this.currLevel];
+
+        this.player.setPos([coords.x, coords.y]);
     }
 
     draw(c){
         this.tiles.map(x => { x.map(y => {y.draw(c);}); });
         this.player.draw(c);
-        
+
     }
 
 
