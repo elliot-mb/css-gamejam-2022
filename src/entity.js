@@ -1,5 +1,6 @@
 /* TODO 
 props:
+
     position 
     health //tiles dubiously need health???
     hitbox
