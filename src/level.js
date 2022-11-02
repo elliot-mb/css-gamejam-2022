@@ -55,18 +55,60 @@ export default class level{
 
             for (let x = 0; x < levelRow.length(); x++){
                 let entity = levelRow[y][x];
-                let properties = {};
+                let entityProp;
+                let tiles = [];
 
                 switch (entity){
                     case 'S':
-                        properties.push({"nametag":"codey"}, {"pos":[x,y]}, {"collides":false},{"ctx":ctx})//finish this
+                        entityProp ={
+                                        "nametag":"Ant", 
+                                        "pos":[x,y], 
+                                        "visible":true, 
+                                        "collides":true,
+                                        "ctx":ctx, 
+                                        "spriteInfo":undefined
+                                    };
+                        tiles.push(new Player(entityProp))
+
                     case 'D':
-                    //case enemies
-                    default:
+                        entityProp ={
+                                        "nametag":"End", 
+                                        "pos":[x,y], 
+                                        "visible":true, 
+                                        "collides":true,
+                                        "ctx":ctx, 
+                                        "spriteInfo":undefined
+                                    };
+                        tiles.push(new Tile(entityProp))
+
+                    case '#':
+                        entityProp ={
+                                        "nametag":"Wall", 
+                                        "pos":[x,y], 
+                                        "visible":true, 
+                                        "collides":true,
+                                        "ctx":ctx, 
+                                        "spriteInfo":undefined
+                                    };
+                        tiles.push(new Tile(entityProp))
+
+                     default:
                         if (entity.match(/([A-Z]\[S,D])/g)){
                             //create death bar object
+
                         }
-                        
+                        else if (entity.match(/([0-9])/g)){
+                            entityProp =
+                                {
+                                    "nametag":`Enemy${entity}`, 
+                                    "pos":[x,y], 
+                                    "visible":true, 
+                                    "collides":true,
+                                    "ctx":ctx, 
+                                    "spriteInfo":undefined
+                                };
+                                tiles.push(new Enemy(entityProp))
+                        }    
                 }
             }
         }
