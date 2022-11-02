@@ -57,7 +57,7 @@ let fsm = new StateMachine({
 let keyListener = {
     pressed: {}, //set of pressed keys
     methods: {
-        "a": (ts) => {
+        "a": (ts) => { //some methods take timestamp so all methods take timestamp
             player.moveLeft(ts);
         },
         "d": (ts) => {
@@ -117,8 +117,15 @@ const makeFrame = (timestamp) => {
     background.draw();
     keyListener.update(timestamp);
 
-    if (fsm.state === "game") level.draw(c);
+    if (fsm.state === "game"){
+        level.draw(c); 
+        if(dt){
+            player.update(dt);
+            player.draw(c, timestamp);
+        }
+    } 
     ui.draw(c);
+
 
     requestAnimationFrame(makeFrame);
 }
