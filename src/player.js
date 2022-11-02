@@ -45,6 +45,7 @@ export default class Player extends Entity {
         this.grid;
         this.end;
         this.progress;
+        this.levelDims;
     }
 
     setPos(_pos){
@@ -66,6 +67,10 @@ export default class Player extends Entity {
     setOffset(_offset){
         this.xOff = _offset[0];
         this.yOff = _offset[1];
+    }
+
+    setLevelDims(dims){
+        this.levelDims = dims;
     }
 
     coolingDown(ts){

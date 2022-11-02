@@ -23,6 +23,7 @@ export default class Level{
         this.playerStart = []; //array of jsons of start positions 
         this.scales = [];
         this.offsets = [];
+        this.dims = [];
     }
     
     // methods: 
@@ -50,6 +51,8 @@ export default class Level{
             let [scale, xOff, yOff] = this.centre(levelRows.length - 1, levelRows.map(x => x.length).reduce((x, y) => Math.max(x, y), 0));
             this.scales.push(scale);
             this.offsets.push([xOff, yOff]);
+            this.dims.push([levelRows.length - 1, levelRows.map(x => x.length).reduce((x, y) => Math.max(x, y), 0)]);
+            
         }
         console.log(this.scales);
         
@@ -94,6 +97,7 @@ export default class Level{
                     case 'S':
                         this.player.setPos([x,y]);
                         this.player.setOffset(offset);
+                        this.player.setLevelDims();
 
                         this.playerStart.push({x: x, y: y});
 
