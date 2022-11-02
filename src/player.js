@@ -36,19 +36,24 @@ import Entity from "./entity.js";
 export default class Player extends Entity {
     constructor(_properties){
         super(_properties);
+        this.grid;
     }
 
     setPos(_pos){
         this.pos = _pos;
     }
 
+    setGrid(_grid){
+        this.grid = _grid;
+    }
+
     move(direction){
         switch(direction){
             case "u":
-                this.pos[1]--;
+                this.moveUp();
                 break;
             case "d":
-                this.pos[1]++;
+                this.moveDown();
                 break;
             case "l":
                 this.pos[0]--;
@@ -59,6 +64,24 @@ export default class Player extends Entity {
             default:
                 console.error("not a direction "+direction);
         }
+    }
+
+    moveDown(){
+        let y = this.pos[1];
+        console.log(this.grid);
+        while(this.grid[y][this.pos[0]].nametag !== "Wall" && y < this.grid.length){
+            y++;
+        }
+        this.pos[1] = y - 1;
+    }
+
+    moveUp(){
+        let y = this.pos[1];
+        console.log(this.grid);
+        while(this.grid[y][this.pos[0]].nametag !== "Wall" && y >= 0){
+            y--;
+        }
+        this.pos[1] = y + 1;
     }
 
     draw(c){

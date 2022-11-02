@@ -20,6 +20,7 @@ export default class Level{
         this.tiles  = [];
         this.currLevel = 0;
         this.player = _player;
+        this.playerStart = []; //array of strings of start positions 
         this.scales = [];
     }
     
@@ -63,12 +64,14 @@ export default class Level{
             for (let x = 0; x < levelRow.length; x++){
                 let entity = levelRow[x];
                 let entityProp;
-                console.log(`character '${entity}'`);
                 let t;
+
                 switch (entity){
                     case 'S':
-                        console.log(`recognises S`);
                         this.player.setPos([x,y]);
+
+                        this.playerStart.push(`${x},${y}`);
+
                         this.player.scale = scale;
                         tiles.push(this.player);
                         break;
@@ -137,6 +140,7 @@ export default class Level{
             this.tiles.push(tiles);
             
         }
+        this.player.setGrid(this.tiles);
         console.log(this);
     }
 
@@ -149,9 +153,16 @@ export default class Level{
     }
     //     update() //updates level
 
+    start(){
+        console.log(this.playerStart[this.currLevel]);
+        let coords = this.playerStart[this.currLevel].split(",");
+        this.player.setPos([coords[0], coords[1]]);
+    }
+
     draw(c){
         this.tiles.map(x => { x.map(y => {y.draw(c);}); });
         this.player.draw(c);
+        
     }
 
 
