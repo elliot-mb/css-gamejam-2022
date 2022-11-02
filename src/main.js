@@ -11,12 +11,7 @@ let fsm = new StateMachine({
     init: 'menu',
     transitions: [
         {name: 'play', from: 'menu', to: 'game'},
-        {name: 'play', from: 'game', to: 'game'},
-        {name: 'play', from: 'shop', to: 'shop'},
-        {name: 'play', from: 'death', to: 'death'},
         {name: 'visit', from: 'menu', to: 'shop'},
-        {name: 'visit', from: 'shop', to: 'shop'},
-        {name: 'visit', from: 'game', to: 'game'},
         {name: 'quit', from: ['menu', 'game', 'death', 'shop'], to: 'menu'},
         {name: 'lose', from: 'game', to: 'death'},
         {name: 'restart', from: 'death', to: 'game'}
@@ -51,7 +46,7 @@ let keyListener = {
         "a": () => {},
         "d": () => {},
         "s": () => {
-            fsm.visit();
+            try { fsm.visit(); } catch { }
         },
         "w": () => {
             
@@ -60,10 +55,10 @@ let keyListener = {
             
         },
         "Enter": () => {
-            fsm.play();
+            try { fsm.play(); } catch { }
         },
         "Backspace": () => {
-            fsm.quit();
+            try { fsm.quit(); } catch { }
         }
     },
     update: () => {

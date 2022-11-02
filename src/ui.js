@@ -14,9 +14,11 @@ export default class UI{
         this.layout = (c) => {
             c.fillStyle = "#99f";
             c.font = this.header.h3;
-            c.fillText("Health", 50, 100);
-            c.fillText("Corruption", 250, 100);
-            c.fillText("$", 650, 100);
+            c.fillText("Health", 40, 100);
+            c.fillText("Corruption", 450, 100);
+            c.fillText("$", 1050, 100);
+            c.font = this.header.h4;
+            c.fillText("<- Backspace to abandon run", 40, 150);
         }
     }
 
@@ -26,6 +28,8 @@ export default class UI{
             c.fillStyle = "#f99";
             c.font = this.header.h2;
             c.fillText("Shop", 40, 150);
+            c.font = this.header.h4;
+            c.fillText("<- Backspace to return to menu", 40, 225);
         }
     }
 
@@ -33,9 +37,13 @@ export default class UI{
         // show menu
         this.layout = (c) => {
             c.fillStyle = "#fff";
+            c.font = this.header.h1;
+            c.fillText("Bugger!", 40, 150);
             c.font = this.header.h2;
-            c.fillText("Menu", 40, 150);
-            
+            c.fillText("Menu", 75, 300);
+            c.font = this.header.h4;
+            c.fillText("-> Enter to begin a run", 75, 375);
+            c.fillText("-> 'S' to enter the shop", 75, 425);
         };
     }
 
@@ -44,7 +52,7 @@ export default class UI{
         this.layout = (c) => {
             c.fillStyle = "#fff";
             c.font = this.header.h1;
-            c.fillText("You died", 40, 150);
+            c.fillText("You died", 40, 130);
             
         };
     }
