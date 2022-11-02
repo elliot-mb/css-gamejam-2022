@@ -5,20 +5,22 @@ it must be able to let tile and enemy know about the level, when a level is load
 */
 
 // have a level have all the levels and a a current loaded level
-import Player from "player.js"
-import Enemy from "enemy.js"
-import Tile from "tile.js"
+import Player from "./player.js";
+import Enemy from "./enemy.js";
+import Tile from "./tile.js";
+import { INITIAL_HEIGHT } from "./main.js";
 
-export default class level{
+export default class Level{
     // props:
     //     levels[] //level files 
     //     tiles[] //array of tiles 
 
-    constructor(){
+    constructor(_player){
         this.levels = []; // array of json level objects e.g. [{["levelID":0, "levelMatrix":["#####","####0", ...]}, {....}]
         this.tiles  = [];
         this.currLevel = 0;
-
+        this.player = _player;
+        this.scales = [];
     }
     
     // methods: 
@@ -33,66 +35,86 @@ export default class level{
             console.error(err);
         }
 
-        for (let i = 0; i <data.length(); i++){ // iterates through each level
+        for (let i = 0; i < data.length; i++){ // iterates through each level
             let level = {};
             //==============================
             //creates matrix for a single level and fills it
             let levelRows = data[i].split('\n'); // each row of data[i]
             //==============================
 
-            level.push({"levelID":i,"levelMatrix":levelRows})
+            level["levelID"] = i;
+            level["levelMatrix"] = levelRows;
             this.levels.push(level)
+            this.scales.push(INITIAL_HEIGHT/(levelRows.length - 1));
         }
+        console.log(this.scales);
+        
     }
 
     unpack(ctx){
-        let levelMatrix = this.levels[this.currLevel].levelMatrix
+        let levelMatrix = this.levels[this.currLevel].levelMatrix;
+        let scale = this.scales[this.currLevel];
 
-        for (let y = 0; y < levelMatrix.length(); i++){
+        for (let y = 0; y < levelMatrix.length; y++){
     
-            let levelRow = levelMatrix.Split('\n');
-            let entityRow = [];
+            let levelRow = levelMatrix[y];
+            let tiles = [];
 
-            for (let x = 0; x < levelRow.length(); x++){
-                let entity = levelRow[y][x];
+            for (let x = 0; x < levelRow.length; x++){
+                let entity = levelRow[x];
                 let entityProp;
-                let tiles = [];
-
+                console.log(`character '${entity}'`);
+                let t;
                 switch (entity){
                     case 'S':
-                        entityProp ={
-                                        "nametag":"Ant", 
-                                        "pos":[x,y], 
-                                        "visible":true, 
-                                        "collides":true,
-                                        "ctx":ctx, 
-                                        "spriteInfo":undefined
-                                    };
-                        tiles.push(new Player(entityProp))
-
+                        console.log(`recognises S`);
+                        this.player.setPos([x,y]);
+                        this.player.scale = scale;
+                        tiles.push(this.player);
+                        break;
                     case 'D':
+                        console.log(`recognises D`);
                         entityProp ={
                                         "nametag":"End", 
                                         "pos":[x,y], 
                                         "visible":true, 
                                         "collides":true,
                                         "ctx":ctx, 
-                                        "spriteInfo":undefined
+                                        "spriteInfo":undefined,
+                                        "scale":scale
                                     };
-                        tiles.push(new Tile(entityProp))
-
+                        t = new Tile(entityProp);
+                        tiles.push(t)
+                        break;
                     case '#':
+                        console.log(`recognises #`);
                         entityProp ={
                                         "nametag":"Wall", 
                                         "pos":[x,y], 
                                         "visible":true, 
                                         "collides":true,
                                         "ctx":ctx, 
-                                        "spriteInfo":undefined
+                                        "spriteInfo":undefined,
+                                        "scale":scale
                                     };
-                        tiles.push(new Tile(entityProp))
-
-                     default:
+                        t = new Tile(entityProp);
+                        tiles.push(t)
+                        break;
+                    case `p`:
+                        console.log(`recognises p`);
+                        entityProp ={
+                                        "nametag":"Path", 
+                                        "pos":[x,y], 
+                                        "visible":false, 
+                                        "collides":false,
+                                        "ctx":ctx, 
+                                        "spriteInfo":undefined,
+                                        "scale":scale
+                                    };
+                        t = new Tile(entityProp);
+                        tiles.push(t);
+                        break;
+                    default:
                         if (entity.match(/([A-Z]\[S,D])/g)){
                             //create death bar object
 
@@ -109,9 +131,13 @@ export default class level{
                                 };
                                 tiles.push(new Enemy(entityProp))
                         }    
+                        break;
                 }
             }
+            this.tiles.push(tiles);
+            
         }
+        console.log(this);
     }
 
     incLevel(){
@@ -123,7 +149,10 @@ export default class level{
     }
     //     update() //updates level
 
-    //     draw()   // draws stuff
+    draw(c){
+        this.tiles.map(x => { x.map(y => {y.draw(c);}); });
+        this.player.draw(c);
+    }
 
 
 }

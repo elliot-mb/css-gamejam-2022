@@ -27,11 +27,12 @@ const spriteDimensions = 16; //Dimension of each individual sprite
 const spriteAnimations = []; //Maps from name to frames
 const staggerFrames = 15; //Number of gameFrames between updates
 
-import Entity from "./entity";
+import Entity from "./entity.js";
 
-export default class Enemy extends Entity{
-    constructor() {
+export default class Enemy extends Entity {
+    constructor(_properties){
+        super(_properties);
         this.speed = Math.random() * 3 + 0
     }
-
 }
+
