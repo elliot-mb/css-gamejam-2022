@@ -22,3 +22,7 @@ methods:
     pathfind(player)
 
 */
+
+export default class Enemy {
+
+}

@@ -13,3 +13,7 @@ methods:
     draw()
 
 */
+
+export default class Level {
+
+}

@@ -17,3 +17,7 @@ methods:
     collide()
     draw() 
 */
+
+export default class Tile {
+
+}

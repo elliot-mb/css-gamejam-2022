@@ -12,3 +12,7 @@ methods:
     collide() //checks neighbours of entity (all entities are indexed on a grid)
     draw() 
 */
+
+export default class Entity {
+
+}

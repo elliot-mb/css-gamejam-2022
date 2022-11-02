@@ -9,7 +9,7 @@ props:
     position
     health //tiles dubiously need health???
     hitbox
-    
+
 
 methods:
     move() 
@@ -30,3 +30,7 @@ subclass:
     item
     
 */
+
+export default class Player {
+
+}
