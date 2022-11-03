@@ -7,6 +7,9 @@ let c = canvas.getContext("2d");
 export const INITIAL_WIDTH = 1920;
 export const INITIAL_HEIGHT = 1080;
 
+const playerImage = new Image();
+playerImage.src = '../img/snail.png';
+
 const ui = new UI(); ui.toMenu();
 const player = new Player({
     "nametag":"Ant", 
