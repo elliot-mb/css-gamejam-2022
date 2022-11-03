@@ -42,8 +42,6 @@ export default class Enemy extends Entity {
                 case("Enemy0"):
                     c.fillStyle = "#F00";
                     break;
-                case("EnemyA"):
-                    c.fillStyle = "#A0A"
             }
         }
 

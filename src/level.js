@@ -21,6 +21,8 @@ export default class Level{
         this.tiles  = [];
         this.enemies = [];
         this.barEnemies= [];
+        this.barDurations = {};
+
         this.deathCallback = _deathCallback; //function that does cool things (tells main to change state to death)
         this.currLevel = 0;
         this.player = _player;
@@ -79,6 +81,10 @@ export default class Level{
     }
 
     unpack(ctx){
+        this.tiles  = [];
+        this.enemies = [];
+        this.barEnemies= [];
+
         let levelMatrix = this.levels[this.currLevel].levelMatrix;
         let scale = this.scales[this.currLevel];
         let offset = this.offsets[this.currLevel];
@@ -154,7 +160,7 @@ export default class Level{
                         tiles.push(t);
                         break;
                     default:
-                        if (entity.match(/([A-Z]\[S,D])/g)){
+                        if (entity.match(/[A-Z]/g)){
                             entityProp =
                             {
                                 "nametag":`Enemy${entity}`, 
@@ -167,11 +173,23 @@ export default class Level{
                                 "xOff":offset[0],
                                 "yOff":offset[1]
                             };
-                            enemy["visible"] = false;
+                            entityProp["visible"] = false;
+                            if (this.barDurations[entityProp["nametag"]] === undefined){
+                                this.barDurations[entityProp["nametag"]] = Math.floor(Math.random() * 3000) + 1000
+                                console.log(this.barDurations[entityProp["nametag"]])
+                            }
                             let enemy = new barEnemy(entityProp);
+
                             tiles.push(enemy);
                             this.barEnemies.push(enemy)
+                            console.log("pusshing bar enemy ")
+                            this.enemies.push(enemy)
 
+
+                            // console.log(this.barDurations)
+                            // console.log(this.barEnemies)
+                            console.log(entityProp.nametag)
+                            console.log(this.barEnemies)
                         }
                         else if (entity.match(/([0-9])/g)){
                             entityProp =
@@ -228,16 +246,43 @@ export default class Level{
         this.player.setPos([coords.x, coords.y]);
     }
 
-    update(timeStamp, randDuration){
+    update(timestamp, frameID){
         // if(this.enemies.map(e => e.pos[0] === this.player.pos[0] && e.pos[1] === this.player.pos[1]).reduce((x, y) => x || y), false) { 
         //     console.log("collision with enemy here")
         //     this.deathCallback();
         // }
+        this.barEnemies.forEach((e, index) => {
+            let timeElapsed = (timestamp - e.timeStamp)
+            // console.log("timeElapsed:", timeElapsed)
+            // console.log("enemytype:", e)
+            if (timeElapsed < this.barDurations[e.nametag] && e.colourCount <= 254){
+
+                e.visible = true;
+                e.colourCount += 1;
+                e.colour = e.colourCount.toString(16);
+                e.dead = false;
+
+            } else{
+                e.timeStamp = timestamp
+                // e.visible = true;
+                e.dead = true;
+                e.colourCount = 0;
+                e.colour = e.colourCount.toString(16);
+            }
+            // console.log(e.colour)
+
+        })
 
         this.enemies.forEach((e, index) => {
-            if (e.pos[0] === this.player.pos[0] && e.pos[1] === this.player.pos[1]){
+            if (e.nametag.match(/[0-9]/g) && e.pos[0] === this.player.pos[0] && e.pos[1] === this.player.pos[1]){
+                console.log("dead 2")
                 this.deathCallback();
             }
+            else if (e.dead === true && e.pos[0] === this.player.pos[0] && e.pos[1] === this.player.pos[1]){
+                console.log("dead 1")
+                this.deathCallback();
+            }
+
         })
 
         
