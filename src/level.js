@@ -251,7 +251,7 @@ export default class Level{
 
     incLevel(ctx){
         console.log(this.currLevel);
-        if(this.currLevel > this.levels.length) { 
+        if(this.currLevel > this.levels.length - 2) { 
             console.log("END!");
             return this.winCallback(); 
         }
