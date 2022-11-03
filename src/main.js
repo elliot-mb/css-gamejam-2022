@@ -17,10 +17,6 @@ export const INITIAL_HEIGHT = 1080;
 const playerImage = new Image();
 playerImage.src = '../img/snail.png';
 
-const ui = new UI(); 
-ui.toMenu();
-
-
 const player = new Player({
     "nametag":"Ant", 
     "pos":[0,0], 

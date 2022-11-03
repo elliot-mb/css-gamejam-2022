@@ -37,7 +37,7 @@ export const characters = {
             frames: 4,
             stagger: 10
             },
-
+        },
     coin: {
         resolution: 32,
         image: () => {
@@ -86,6 +86,8 @@ export const characters = {
     }
     //other characters like enemies 
 };
+
+
 
 
 
