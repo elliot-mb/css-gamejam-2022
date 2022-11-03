@@ -1,7 +1,7 @@
 import Hotbar from "./hotbar.js";
 
 export default class UI{
-    constructor(){
+    constructor(_getCoins){
         this.layout = () => {};
         this.header = {
             h1: '150px sans-serif',
@@ -9,6 +9,7 @@ export default class UI{
             h3: '50px sans-serif',
             h4: '35px sans-serif'
         }
+
         this.hotbar = new Hotbar(
             {
                 "nametag":"hotbar",
@@ -17,6 +18,7 @@ export default class UI{
                 "collides":false,   
             }
         )
+        this.getCoins = _getCoins; //callback to player
     };
 
     toPlay(){
@@ -24,9 +26,9 @@ export default class UI{
         this.layout = (c) => {
             c.fillStyle = "#99f";
             c.font = this.header.h3;
-            c.fillText("Health", 10, 50);
-            c.fillText("Corruption", 425, 50);
-            c.fillText("$", 1025, 50);
+            c.fillText(`Health ${""}`, 10, 50);
+            c.fillText(`Corruption ${""}`, 425, 50);
+            c.fillText(`$${this.getCoins()}`, 1025, 50);
             c.font = this.header.h4;
             c.fillText("<- Backspace to abandon run", 10, 1070);
             // this.hotbar.update(dt,frameID);

@@ -41,7 +41,7 @@ export default class Player extends Entity {
         this.lastMoved = 0;
         this.cooldown = 100;
         this.visualPos = [0,0];
-        this.interp = 100;
+        this.interp = 3;
         
         //animator
         this.animator = new Animator(characters.snail, characters.snail.jump);
@@ -53,6 +53,15 @@ export default class Player extends Entity {
         this.end;
         this.progress;
         this.levelDims;
+        this.coinRefs = []; // list of all coins
+
+        //progress
+        this.coins = 0;
+    }
+
+    reset(){
+        this.coins = 0;
+        this.coinRefs = [];
     }
 
     setPos(_pos){
@@ -80,67 +89,58 @@ export default class Player extends Entity {
         this.levelDims = dims;
     }
 
+    addCoinRef(c){
+        this.coinRefs.push(c);
+    }
+
+    addCoins(count){
+        this.coins += count;
+    }
+
     coolingDown(ts){
         return (ts - this.lastMoved) < this.cooldown;
     }
 
-    moveDown(ts){
-        if(this.coolingDown(ts)) { return; }
+    moveY(ts, dir){
+        let moves = dir === "u" ? -1 : 1;
         let y = this.pos[1];
-        while(this.grid[y + 1][this.pos[0]].nametag !== "Wall" && y < this.grid.length){
-            y++;
+        while(this.grid[y + moves][this.pos[0]].nametag !== "Wall" && y < this.grid.length - 1 && y > 0){
+            this.coinRefs.map(c => c.playerOnMe([this.pos[0], y]));
+            y += moves;
         }
         this.pos[1] = y;
         this.lastMoved = ts;
-        this.justMoved = true;
+        this.justMoved = this.framesLeft === 0 ? true : false;
     }
 
-    moveUp(ts){
-        if(this.coolingDown(ts)) { return; }
-        let y = this.pos[1];
-
-        while(this.grid[y - 1][this.pos[0]].nametag !== "Wall" && y >= 0){
-            y--;
-        }
-        this.pos[1] = y;
-        this.lastMoved = ts;
-        this.justMoved = true;
-    }
-vfv
-    moveRight(ts){
-        if(this.coolingDown(ts)) { return; }
+    moveX(ts, dir){
+        let moves = dir === "l" ? -1 : 1;
         let x = this.pos[0];
  
-        while(this.grid[this.pos[1]][x + 1].nametag !== "Wall" && x < this.grid[0].length - 1){
-            x++;
+        while(this.grid[this.pos[1]][x + moves].nametag !== "Wall" && x < this.grid[0].length - 1 && x > 0){
+            this.coinRefs.map(c => c.playerOnMe([x, this.pos[1]]));
+            x += moves;
         }
         this.pos[0] = x;
         this.lastMoved = ts;
-        this.justMoved = true;
-    }
-
-    moveLeft(ts){
-        if(this.coolingDown(ts)) { return; }
-        let x = this.pos[0];
-
-        while(this.grid[this.pos[1]][x - 1].nametag !== "Wall" && x >= 0){
-            x--;
-        }
-        this.pos[0] = x;
-        this.lastMoved = ts;
-        this.justMoved = true;
+        this.justMoved = this.framesLeft === 0 ? true : false;
     }
 
     update(dt, frameID){
-        this.visualPos[0] += (((this.pos[0] * this.scale) + this.xOff - this.visualPos[0]) / this.interp) * dt;
-        this.visualPos[1] += (((this.pos[1] * this.scale) + this.yOff - this.visualPos[1]) / this.interp) * dt;
-        console.log(this.xOff, this.yOff);
+        this.visualPos[0] += (((this.pos[0] * this.scale) + this.xOff - this.visualPos[0]) / this.interp);
+        this.visualPos[1] += (((this.pos[1] * this.scale) + this.yOff - this.visualPos[1]) / this.interp);
         if(this.end[0] === this.pos[0] && this.end[1] === this.pos[1]) { this.progress(this.ctx); }  //here we pass level the necessary context to process the level change 
     
+        this.animatorController(frameID);
+
+        this.coinRefs.map(c => c.update(frameID));
+    }
+
+    animatorController(frameID){
         if(this.justMoved === true){
             this.justMoved = false;
             this.animator.reset();
-            this.framesLeft = characters.snail.jump.frames * characters.snail.stagger;
+            this.framesLeft = characters.snail.jump.frames * characters.snail.jump.stagger;
         }
 
         //jumping animination
@@ -148,11 +148,13 @@ vfv
             this.animator.update(frameID);
             this.framesLeft--;
         }
+        if(this.framesLeft === 1) this.animator.reset();
     }
 
     draw(ctx, ts){
         ctx.fillStyle = this.coolingDown(ts) ? "#920" : "#fff";
         this.animator.draw(ctx, this.visualPos[0], this.visualPos[1], this.scale, this.scale);
+        this.coinRefs.map(c => c.draw(ctx));
         //console.log(this.coolingDown(ts));
         //c.fillRect(this.visualPos[0], this.visualPos[1], this.scale, this.scale);
     }
