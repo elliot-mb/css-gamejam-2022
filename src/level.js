@@ -6,18 +6,22 @@ it must be able to let tile and enemy know about the level, when a level is load
 
 // have a level have all the levels and a a current loaded level
 import Player from "./player.js";
-import Enemy from "./enemy.js";
 import Tile from "./tile.js";
 import { INITIAL_HEIGHT, INITIAL_WIDTH } from "./main.js";
+import Enemy from "./enemy.js";
+import barEnemy from "./barEnemy.js";
 
 export default class Level{
     // props:
     //     levels[] //level files 
     //     tiles[] //array of tiles 
 
-    constructor(_player){
+    constructor(_player, _deathCallback){
         this.levels = []; // array of json level objects e.g. [{["levelID":0, "levelMatrix":["#####","####0", ...]}, {....}]
         this.tiles  = [];
+        this.enemies = [];
+        this.barEnemies= [];
+        this.deathCallback = _deathCallback; //function that does cool things (tells main to change state to death)
         this.currLevel = 0;
         this.player = _player;
         this.playerStart = []; //array of jsons of start positions 
@@ -108,7 +112,7 @@ export default class Level{
                                         "visible":true, 
                                         "collides":true,
                                         "ctx":ctx, 
-                                        "spriteInfo":undefined,
+                                        // "spriteInfo":undefined,
                                         "scale":scale,
                                         "xOff":offset[0],
                                         "yOff":offset[1]
@@ -125,7 +129,7 @@ export default class Level{
                                         "visible":true, 
                                         "collides":true,
                                         "ctx":ctx, 
-                                        "spriteInfo":undefined,
+                                        // "spriteInfo":undefined,
                                         "scale":scale,
                                         "xOff":offset[0],
                                         "yOff":offset[1]
@@ -141,7 +145,7 @@ export default class Level{
                                         "visible":false, 
                                         "collides":false,
                                         "ctx":ctx, 
-                                        "spriteInfo":undefined,
+                                        // "spriteInfo":undefined,
                                         "scale":scale,
                                         "xOff":offset[0],
                                         "yOff":offset[1]
@@ -151,7 +155,22 @@ export default class Level{
                         break;
                     default:
                         if (entity.match(/([A-Z]\[S,D])/g)){
-                            //create death bar object
+                            entityProp =
+                            {
+                                "nametag":`Enemy${entity}`, 
+                                "pos":[x,y], 
+                                "visible":true, 
+                                "collides":true,
+                                "ctx":ctx, 
+                                // "spriteInfo":undefined,
+                                "scale":scale,
+                                "xOff":offset[0],
+                                "yOff":offset[1]
+                            };
+                            enemy["visible"] = false;
+                            let enemy = new barEnemy(entityProp);
+                            tiles.push(enemy);
+                            this.barEnemies.push(enemy)
 
                         }
                         else if (entity.match(/([0-9])/g)){
@@ -162,12 +181,15 @@ export default class Level{
                                     "visible":true, 
                                     "collides":true,
                                     "ctx":ctx, 
-                                    "spriteInfo":undefined,
+                                    // "spriteInfo":undefined,
                                     "scale":scale,
                                     "xOff":offset[0],
                                     "yOff":offset[1]
                                 };
-                                tiles.push(new Enemy(entityProp))
+                                let enemy = new Enemy(entityProp);
+                                tiles.push(enemy);
+                                this.enemies.push(enemy);
+                                
                         }    
                         break;
                 }
@@ -204,6 +226,23 @@ export default class Level{
         let coords = this.playerStart[this.currLevel];
 
         this.player.setPos([coords.x, coords.y]);
+    }
+
+    update(timeStamp, randDuration){
+        // if(this.enemies.map(e => e.pos[0] === this.player.pos[0] && e.pos[1] === this.player.pos[1]).reduce((x, y) => x || y), false) { 
+        //     console.log("collision with enemy here")
+        //     this.deathCallback();
+        // }
+
+        this.enemies.forEach((e, index) => {
+            if (e.pos[0] === this.player.pos[0] && e.pos[1] === this.player.pos[1]){
+                this.deathCallback();
+            }
+        })
+
+        
+
+        this.barEnemies
     }
 
     draw(c){

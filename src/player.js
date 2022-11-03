@@ -106,7 +106,7 @@ export default class Player extends Entity {
         this.lastMoved = ts;
         this.justMoved = true;
     }
-
+vfv
     moveRight(ts){
         if(this.coolingDown(ts)) { return; }
         let x = this.pos[0];
