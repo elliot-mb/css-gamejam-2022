@@ -56,6 +56,7 @@ let fsm = new StateMachine({
         onLose: function() {  
             background.colour = "#511";
             ui.toLose();
+            console.log("loser lololol")
         },
         onRestart: function() {
             background.colour = "#111"
@@ -65,7 +66,7 @@ let fsm = new StateMachine({
 });
 
 let level = new Level(player, () => {
-    fsm.lose();
+    try { fsm.lose(); } catch {}
 });
 await level.parseLevel();
 level.unpack(ctx);
@@ -126,6 +127,7 @@ let background = {
 let dt = 0;
 let pt = 0;
 let frameID = 0;
+let randDur = {"value":Math.floor(Math.random() * 3)}
 
 const makeFrame = (timestamp) => {
     dt = timestamp - pt;
@@ -133,7 +135,10 @@ const makeFrame = (timestamp) => {
     
     background.draw();
     keyListener.update(timestamp);
-    //level.tiles.map(r => r.map(t => t.update(frameID)));
+
+    // console.log("timestamp mainloop:", timestamp)s
+    level.update(timestamp, frameID);
+
     //animator.update(frameID);
 
     if (fsm.state === "game"){

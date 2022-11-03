@@ -67,9 +67,9 @@ export default class UI{
     toLose(){
         // 
         this.layout = (c) => {
-            c.fillStyle = "#f11";
+            c.fillStyle = "#f00";
             c.font = this.header.h1;
-            c.fillText("You died", 40, 130);
+            c.fillText("You died", 50, 130);
             
         };
     }

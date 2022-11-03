@@ -38,17 +38,17 @@ export default class Enemy extends Entity {
 
     draw(ctx){
         // c.fillStyle = this.visible ? (this.nametag === "Enemy0" ? "#F00" : "#0000" ) : "#0000";
-        // if (this.visible){
-        //     switch(this.nametag){
-        //         case("Enemy0"):
-        //             c.fillStyle = "#F00";
-        //             break;
-        //         case("EnemyA"):
-        //             c.fillStyle = "#A0A"
-        //     }
-        // }
-        ctx.fillStyle = this.colour;
-        ctx.fillRect((this.pos[0] * this.scale)  + this.xOff, (this.pos[1] * this.scale) + this.yOff, this.scale, this.scale);
+
+        if (this.visible){
+            switch(this.nametag){
+                case("Enemy0"):
+                    c.fillStyle = "#F00";
+                    break;
+            }
+        }
+
+        c.fillRect((this.pos[0] * this.scale)  + this.xOff, (this.pos[1] * this.scale) + this.yOff, this.scale, this.scale);
+
     }
 }
 
