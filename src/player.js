@@ -31,6 +31,8 @@ subclass:
     
 */
 
+
+import Animator, { characters } from "./animator.js";
 import Entity from "./entity.js";
 
 export default class Player extends Entity {
@@ -39,8 +41,13 @@ export default class Player extends Entity {
         this.lastMoved = 0;
         this.cooldown = 100;
         this.visualPos = [0,0];
-        this.interp = 30;
+        this.interp = 100;
         
+        //animator
+        this.animator = new Animator(characters.snail, characters.snail.jump);
+        this.justMoved = false;
+        this.framesLeft = 0;
+
         //properties defined after level is passed
         this.grid;
         this.end;
@@ -85,6 +92,7 @@ export default class Player extends Entity {
         }
         this.pos[1] = y;
         this.lastMoved = ts;
+        this.justMoved = true;
     }
 
     moveUp(ts){
@@ -96,6 +104,7 @@ export default class Player extends Entity {
         }
         this.pos[1] = y;
         this.lastMoved = ts;
+        this.justMoved = true;
     }
 
     moveRight(ts){
@@ -107,6 +116,7 @@ export default class Player extends Entity {
         }
         this.pos[0] = x;
         this.lastMoved = ts;
+        this.justMoved = true;
     }
 
     moveLeft(ts){
@@ -118,18 +128,32 @@ export default class Player extends Entity {
         }
         this.pos[0] = x;
         this.lastMoved = ts;
+        this.justMoved = true;
     }
 
-    update(dt){
+    update(dt, frameID){
         this.visualPos[0] += (((this.pos[0] * this.scale) + this.xOff - this.visualPos[0]) / this.interp) * dt;
         this.visualPos[1] += (((this.pos[1] * this.scale) + this.yOff - this.visualPos[1]) / this.interp) * dt;
         console.log(this.xOff, this.yOff);
         if(this.end[0] === this.pos[0] && this.end[1] === this.pos[1]) { this.progress(this.ctx); }  //here we pass level the necessary context to process the level change 
+    
+        if(this.justMoved === true){
+            this.justMoved = false;
+            this.animator.reset();
+            this.framesLeft = characters.snail.jump.frames * characters.snail.stagger;
+        }
+
+        //jumping animination
+        if(this.framesLeft > 0){
+            this.animator.update(frameID);
+            this.framesLeft--;
+        }
     }
 
-    draw(c, ts){
-        c.fillStyle = this.coolingDown(ts) ? "#920" : "#fff";
+    draw(ctx, ts){
+        ctx.fillStyle = this.coolingDown(ts) ? "#920" : "#fff";
+        this.animator.draw(ctx, this.visualPos[0], this.visualPos[1], this.scale, this.scale);
         //console.log(this.coolingDown(ts));
-        c.fillRect(this.visualPos[0], this.visualPos[1], this.scale, this.scale);
+        //c.fillRect(this.visualPos[0], this.visualPos[1], this.scale, this.scale);
     }
 }

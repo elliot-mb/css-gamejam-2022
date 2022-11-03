@@ -74,10 +74,6 @@ export default class Level{
         return [scale, xOff, yOff]; //return scale and x and y offset 
     }
 
-    resetForLoad(){
-        this.tiles = [];
-    }
-
     unpack(ctx){
         let levelMatrix = this.levels[this.currLevel].levelMatrix;
         let scale = this.scales[this.currLevel];
@@ -185,6 +181,10 @@ export default class Level{
         
     }
 
+    resetForLoad(){
+        this.tiles = [];
+    }
+
     incLevel(ctx){
         console.log("IM CHANGIN THE FUCKING SATATE?>er>a?>ad>?SDa<LMKDNHSUB");
         this.currLevel += 1;
@@ -192,8 +192,10 @@ export default class Level{
         this.unpack(ctx);
     }
 
-    resLevel(){
+    resLevel(ctx){
         this.currLevel = 0;
+        this.resetForLoad();
+        this.unpack(ctx);
     }
     //     update() //updates level
 
