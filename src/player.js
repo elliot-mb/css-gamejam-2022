@@ -109,34 +109,39 @@ export default class Player extends Entity {
         return (ts - this.lastMoved) < this.cooldown;
     }
 
-    moveY(ts, dir){
-        if(ts > this.lastMoved + this.cooldown){
-            let moves = dir === "u" ? -1 : 1;
-            let y = this.pos[1];
-            while((this.grid[y + moves][this.pos[0]].nametag !== "Wall") && y < this.grid.length - 1 && y > 0){
-                this.coinRefs.map(c => c.playerOnMe([this.pos[0], y]));
-                y += moves;
-            }
-            this.pos[1] = y;
-            this.lastMoved = ts;
-            this.justMoved = this.framesLeft === 0 ? true : false;
-            this.lastMoved = ts;
+    moveY(ts, dir, level, _fDead){
+        let moves = dir === "u" ? -1 : 1;
+        let y = this.pos[1];
+        let enemyStationary = level.enemies.filter(e => e.nametag.match(/[0-9]/g))
+        // console.log(enemyStationary)
+        while(this.grid[y + moves][this.pos[0]].nametag !== "Wall" && y < this.grid.length - 1 && y > 0){
+            this.coinRefs.map(c => c.playerOnMe([this.pos[0], y]));
+            enemyStationary.forEach((e, index) => {
+                if (e.pos[0] === this.pos[0] && e.pos[1] === y){
+                    console.log("dead 2")
+                    _fDead();
+                }
+
+            })
+            y += moves;
         }
     }
 
-    moveX(ts, dir){
-        if(ts > this.lastMoved + this.cooldown){
-            let moves = dir === "l" ? -1 : 1;
-            let x = this.pos[0];
-    
-            while((this.grid[this.pos[1]][x + moves].nametag !== "Wall") && x < this.width - 1 && x > 0){
-                this.coinRefs.map(c => c.playerOnMe([x, this.pos[1]]));
-                x += moves;
-            }
-            this.pos[0] = x;
-            this.lastMoved = ts;
-            this.justMoved = this.framesLeft === 0 ? true : false;
-            this.lastMoved = ts;
+    moveX(ts, dir, level, _fDead){
+        let moves = dir === "l" ? -1 : 1;
+        let x = this.pos[0];
+        let enemyStationary = level.enemies.filter(e => e.nametag.match(/[0-9]/g))
+ 
+        while(this.grid[this.pos[1]][x + moves].nametag !== "Wall" && x < this.width - 1 && x > 0){
+            this.coinRefs.map(c => c.playerOnMe([x, this.pos[1]]));
+            enemyStationary.forEach((e, index) => {
+                if (e.pos[0] === x && e.pos[1] === this.pos[1]){
+                    console.log("dead 2")
+                    _fDead();
+                }
+
+            })
+            x += moves;
         }
     }
 

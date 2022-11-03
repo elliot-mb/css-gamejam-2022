@@ -56,7 +56,7 @@ export default class UI{
             c.fillStyle = "#fff";
             c.font = this.header.h1;
             c.fillText("Cyber Snail", 40, 150);
-            c.font = this.header.h2;
+            c.font = "bold 48px calibri";
             c.fillText("Menu", 75, 300);
             c.font = this.header.h4;
             c.fillText("-> Enter to begin a run", 75, 375);

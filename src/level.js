@@ -42,7 +42,7 @@ export default class Level{
         let data;
         try{
             const levelPromise = await fetch("../data/levels/levels.txt"); // promise kinda like a pipe that has a buffer
-            data = await (await levelPromise.text()).split('----\n'); // waits for promise to come and converts it into an array of strings
+            data = await (await levelPromise.text()).split('----'); // waits for promise to come and converts it into an array of strings
 
         } catch(err){
             console.error(err);
