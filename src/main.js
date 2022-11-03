@@ -56,7 +56,7 @@ let fsm = new StateMachine({
         onLose: function() {  
             background.colour = "#511";
             ui.toLose();
-            console.log("loser lololol")
+            // console.log("loser lololol")
         },
         onRestart: function() {
             background.colour = "#111"
@@ -75,17 +75,17 @@ let keyListener = {
     pressed: {}, //set of pressed keys
     methods: {
         "a": (ts) => { //some methods take timestamp so all methods take timestamp
-            player.moveX(ts, "l");
+            player.moveX(ts, "l", level, () => {try{ fsm.lose(); } catch {}});
         },
         "d": (ts) => {
-            player.moveX(ts, "r");
+            player.moveX(ts, "r", level,() => {try{ fsm.lose(); } catch {}});
         },
         "s": (ts) => {
-            player.moveY(ts, "d");
+            player.moveY(ts, "d", level,() => {try{ fsm.lose(); } catch {}});
             try { fsm.visit(); } catch { }
         },
         "w": (ts) => {
-            player.moveY(ts, "u");
+            player.moveY(ts, "u", level,() => {try{ fsm.lose(); } catch {}});
         },
         " ": (ts) => { 
             
