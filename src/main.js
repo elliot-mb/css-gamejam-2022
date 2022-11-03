@@ -63,7 +63,7 @@ let level = new Level(player, () => {
     fsm.lose();
 });
 await level.parseLevel();
-level.unpack(c);
+level.unpack(ctx);
 
 let keyListener = {
     pressed: {}, //set of pressed keys
