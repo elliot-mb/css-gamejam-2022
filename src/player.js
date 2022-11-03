@@ -41,7 +41,7 @@ export default class Player extends Entity {
         this.lastMoved = 0;
         this.cooldown = 100;
         this.visualPos = [0,0];
-        this.interp = 3;
+        this.interp = 2;
         
         //animator
         this.animator = new Animator(characters.snail, characters.snail.jump);

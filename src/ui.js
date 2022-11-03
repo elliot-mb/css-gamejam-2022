@@ -69,10 +69,14 @@ export default class UI{
         this.layout = (c) => {
             c.fillStyle = "#f00";
             c.font = this.header.h1;
-            c.fillText("You died", 50, 130);
-            
+            c.fillText("You died! :(", 40, 150);
+            c.font = this.header.h4;
+            c.fillText("-> Enter to restart the game", 40, 275);
+            c.fillText("<- Backspace to return to menu", 40, 225);
         };
     }
+
+    toWin(){}
 
     update(){
 

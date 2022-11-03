@@ -42,12 +42,12 @@ export default class Enemy extends Entity {
         if (this.visible){
             switch(this.nametag){
                 case("Enemy0"):
-                    c.fillStyle = "#F00";
+                    ctx.fillStyle = "#F00";
                     break;
             }
         }
 
-        c.fillRect((this.pos[0] * this.scale)  + this.xOff, (this.pos[1] * this.scale) + this.yOff, this.scale, this.scale);
+        ctx.fillRect((this.pos[0] * this.scale)  + this.xOff, (this.pos[1] * this.scale) + this.yOff, this.scale, this.scale);
 
     }
 }
