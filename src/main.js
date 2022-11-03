@@ -1,4 +1,5 @@
 import Animator, { characters } from "./animator.js";
+import Hotbar from "./hotbar.js";
 import Level from "./level.js";
 import Player from "./player.js";
 import UI from "./ui.js";
@@ -11,7 +12,8 @@ export const INITIAL_HEIGHT = 1080;
 const playerImage = new Image();
 playerImage.src = '../img/snail.png';
 
-const ui = new UI(); ui.toMenu();
+const ui = new UI(); 
+ui.toMenu();
 
 const player = new Player({
     "nametag":"Ant", 
@@ -133,6 +135,8 @@ const makeFrame = (timestamp) => {
     if (fsm.state === "game"){
         level.draw(ctx); 
         if(dt){
+            ui.hotbar.update(dt,frameID);
+            ui.hotbar.draw(ctx);
             player.update(dt, frameID);
             player.draw(ctx, timestamp);
         }

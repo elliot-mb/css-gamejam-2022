@@ -21,6 +21,21 @@ export const characters = {
             row: 0,
             frames: 4
         }
+    },
+    hotbar: {
+        resolution: 32,
+        stagger: 10,
+        image: () => { 
+            // let b = await fetch('snail.png').then(r => r.blob());
+            const playerImage = new Image();
+            playerImage.src = '../img/snail.png';
+            return playerImage;
+        },
+        //moves
+        wait: {
+            row: 0,
+            frames: 4
+        }
     }
     //other characters like enemies 
 };
