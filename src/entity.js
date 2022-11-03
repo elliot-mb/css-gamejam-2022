@@ -62,6 +62,17 @@ export default class Entity {
         this.draw(frameX, frameY);
     }
 
+    toScreenCoords(){
+        return [
+            this.xOff + ((this.pos[0]) * this.scale), 
+            this.yOff + ((this.pos[1]) * this.scale)
+        ];
+    }
+
+    update(frameID){
+
+    }
+
     draw() { //renders the sprite
         // this.ctx.drawImage(this.spriteInfo.spriteSheet, frameX, frameY, spriteDimensions, spriteDimensions, pos.x, pos.y, spriteDimensions, spriteDimensions);
     }

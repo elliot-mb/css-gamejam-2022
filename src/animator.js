@@ -9,17 +9,62 @@ This can be defined in a minimal json.
 export const characters = {
     snail: {
         resolution: 32,
-        stagger: 10,
         image: () => { 
             // let b = await fetch('snail.png').then(r => r.blob());
-            const playerImage = new Image();
-            playerImage.src = '../img/snail.png';
-            return playerImage;
+            const i = new Image();
+            i.src = '../img/snail.png';
+            return i;
         },
-        //moves
+        //modes
         jump: {
+            stagger: 10,
             row: 0,
             frames: 4
+        }
+    },
+    coin: {
+        resolution: 32,
+        image: () => {
+            const i = new Image();
+            i.src = '../img/coin.png';
+            return i;
+        },
+        //modes
+        idle: {
+            stagger: 10,
+            row: 0,
+            frames: 4
+        },
+        collect: {
+            stagger: 2,
+            row: 1,
+            frames: 5
+        }
+    },
+    rock: {
+        resolution: 32,
+        image: () => {
+            const i = new Image();
+            i.src = '../img/rock.png';
+            return i;
+        },
+        idle: {
+            stagger: 1,
+            row: 0,
+            frames: 1
+        }
+    },
+    brick: {
+        resolution: 32,
+        image: () => {
+            const i = new Image();
+            i.src = '../img/brick.png';
+            return i;
+        },
+        idle: {
+            stagger: 30,
+            row: 0,
+            frames: 5
         }
     }
     //other characters like enemies 
@@ -43,22 +88,33 @@ export default class Animator{
         this.update(0);
     }
 
-    reset(){ this.frame = 0; }
+    reset(){ 
+        this.frame = 0;
+        this.cropping = this.cropOnFrame(0);
+    }
 
-    update(frameID){
-        if(frameID % this.character.stagger === 0){
+    setMode(m){
+        this.mode = m;
+    }
+
+    cropOnFrame(f){
+        return {
+            sx: this.character.resolution * f,
+            sy: this.mode.row * this.character.resolution, 
+            sw: this.character.resolution,
+            sh: this.character.resolution
+        };
+    }
+
+    update(frameID){ //changes the frame
+        if(frameID % this.mode.stagger === 0){
             const f = this.frame % this.mode.frames;
-            this.cropping = {
-                sx: this.character.resolution * f,
-                sy: this.mode.row * this.character.resolution, 
-                sw: this.character.resolution,
-                sh: this.character.resolution
-            }
+            this.cropping = this.cropOnFrame(f);
             this.frame++;
         }
     }
 
-    draw(ctx, dx, dy, dw, dh){
+    draw(ctx, dx, dy, dw, dh){ //draws the frame
         ctx.drawImage(this.character.image(), 
             this.cropping.sx, 
             this.cropping.sy,
