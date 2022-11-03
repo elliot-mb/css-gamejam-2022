@@ -1,3 +1,5 @@
+import Hotbar from "./hotbar.js";
+
 export default class UI{
     constructor(_getCoins){
         this.layout = () => {};
@@ -7,6 +9,15 @@ export default class UI{
             h3: '50px sans-serif',
             h4: '35px sans-serif'
         }
+
+        this.hotbar = new Hotbar(
+            {
+                "nametag":"hotbar",
+                "pos":[960, 1080], //should be bottom mid of screen
+                "visible":true,
+                "collides":false,   
+            }
+        )
         this.getCoins = _getCoins; //callback to player
     };
 
@@ -20,6 +31,9 @@ export default class UI{
             c.fillText(`$${this.getCoins()}`, 1025, 50);
             c.font = this.header.h4;
             c.fillText("<- Backspace to abandon run", 10, 1070);
+            // this.hotbar.update(dt,frameID);
+            // this.hotbar.draw(c);
+            c.fillText("HOTBAR", 960, 1080);
         }
     }
 
@@ -31,6 +45,8 @@ export default class UI{
             c.fillText("Shop", 40, 150);
             c.font = this.header.h4;
             c.fillText("<- Backspace to return to menu", 40, 225);
+            // hotbar.update(dt,frameID);
+            // hotbar.draw(ctx);
         }
     }
 
