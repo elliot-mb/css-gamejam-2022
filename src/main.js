@@ -34,8 +34,9 @@ let fsm = new StateMachine({
     transitions: [
         {name: 'play', from: 'menu', to: 'game'},
         {name: 'visit', from: 'menu', to: 'shop'},
-        {name: 'quit', from: ['menu', 'game', 'death', 'shop'], to: 'menu'},
         {name: 'lose', from: 'game', to: 'death'},
+        {name: 'win', from: 'game', to:'winscreen'},
+        {name: 'quit', from: ['menu', 'game', 'death', 'shop', 'winscreen'], to: 'menu'},
         {name: 'restart', from: 'death', to: 'game'}
     ],
     methods: {
@@ -56,18 +57,19 @@ let fsm = new StateMachine({
         onLose: function() {  
             background.colour = "#511";
             ui.toLose();
-            console.log("loser lololol")
         },
         onRestart: function() {
             background.colour = "#111"
-            ui.toGame();
+            level.resLevel(ctx);
+            level.start();
+            ui.toPlay();
         }
     }
 });
 
-let level = new Level(player, () => {
-    try { fsm.lose(); } catch {}
-});
+let level = new Level(player, 
+    () => { try { fsm.lose(); } catch {}},
+    () => { try { fsm.win(); } catch {}});
 await level.parseLevel();
 level.unpack(ctx);
 
@@ -92,6 +94,7 @@ let keyListener = {
         },
         "Enter": (ts) => {
             try { fsm.play(); } catch { }
+            try { fsm.restart(); } catch {}
         },
         "Backspace": (ts) => {
             try { fsm.quit(); } catch { }
