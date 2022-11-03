@@ -92,7 +92,7 @@ export default class Player extends Entity {
         this.pos[1] = y;
         this.lastMoved = ts;
     }
-
+vfv
     moveRight(ts){
         if(this.coolingDown(ts)) { return; }
         let x = this.pos[0];

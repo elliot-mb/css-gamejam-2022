@@ -16,7 +16,7 @@ export default class Entity {
         this.colliding = []; //comprehensive list of collisions with current object
         this.collides = properties.collides;
         this.ctx = properties.ctx;
-        this.spriteInfo = properties.spriteInfo;
+        // this.spriteInfo = properties.spriteInfo;
         this.health = properties.health;
         this.xOff = properties.xOff;
         this.yOff = properties.yOff;
@@ -63,7 +63,7 @@ export default class Entity {
     }
 
     draw() { //renders the sprite
-        this.ctx.drawImage(this.spriteInfo.spriteSheet, frameX, frameY, spriteDimensions, spriteDimensions, pos.x, pos.y, spriteDimensions, spriteDimensions);
+        // this.ctx.drawImage(this.spriteInfo.spriteSheet, frameX, frameY, spriteDimensions, spriteDimensions, pos.x, pos.y, spriteDimensions, spriteDimensions);
     }
 
     collide() { //idk

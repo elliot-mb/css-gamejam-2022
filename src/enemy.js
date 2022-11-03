@@ -32,7 +32,13 @@ import Entity from "./entity.js";
 export default class Enemy extends Entity {
     constructor(_properties){
         super(_properties);
-        this.speed = Math.random() * 3 + 0
+        // this.speed = Math.random() * 3 + 0
+    }
+
+    draw(c){
+        c.fillStyle = this.visible ? (this.nametag === "Enemy0" ? "#F00" : "#0000" ) : "#0000";
+        c.fillRect((this.pos[0] * this.scale)  + this.xOff, (this.pos[1] * this.scale) + this.yOff, this.scale, this.scale);
     }
 }
+
 
