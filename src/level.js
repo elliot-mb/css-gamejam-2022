@@ -17,7 +17,7 @@ export default class Level{
     //     levels[] //level files 
     //     tiles[] //array of tiles 
 
-    constructor(_player, _deathCallback){
+    constructor(_player, _deathCallback, _winCallback, _keysPressed){
         this.levels = []; // array of json level objects e.g. [{["levelID":0, "levelMatrix":["#####","####0", ...]}, {....}]
         this.tiles  = [];
         this.enemies = [];
@@ -25,6 +25,9 @@ export default class Level{
         this.barDurations = {};
 
         this.deathCallback = _deathCallback; //function that does cool things (tells main to change state to death)
+        this.winCallback = _winCallback;
+        this.keysPressed = _keysPressed;
+
         this.currLevel = 0;
         this.player = _player;
         this.playerStart = []; //array of jsons of start positions 
@@ -248,7 +251,14 @@ export default class Level{
     }
 
     incLevel(ctx){
-        console.log("IM CHANGIN THE FUCKING SATATE?>er>a?>ad>?SDa<LMKDNHSUB");
+        console.log(this.currLevel);
+        if(this.currLevel > 1) { 
+            console.log("END!");
+            return this.winCallback(); 
+        }
+        //this.player.reset([this.playerStart[this.currLevel].x, this.playerStart[this.currLevel].y]);
+        this.player.resetPos([this.playerStart[this.currLevel].x, this.playerStart[this.currLevel].y]);
+        this.keysPressed = {};
         this.currLevel += 1;
         this.resetForLoad();
         this.unpack(ctx);
@@ -256,8 +266,8 @@ export default class Level{
 
     resLevel(ctx){
         this.currLevel = 0;
-        this.resetForLoad();
         this.player.reset();
+        this.resetForLoad();
         this.unpack(ctx);
     }
     //     update() //updates level
