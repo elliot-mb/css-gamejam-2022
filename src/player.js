@@ -39,7 +39,7 @@ export default class Player extends Entity {
     constructor(_properties){
         super(_properties);
         this.lastMoved = 0;
-        this.cooldown = 100;
+        this.cooldown = 250;
         this.visualPos = [0,0];
         this.interp = 2;
         
@@ -60,9 +60,15 @@ export default class Player extends Entity {
         this.coins = 0;
     }
 
-    reset(){
+    reset(_pos){
+        
+ 
         this.coins = 0;
         this.coinRefs = [];
+    }
+
+    resetPos(_pos){
+        this.pos = _pos;
     }
 
     setPos(_pos){
@@ -119,9 +125,6 @@ export default class Player extends Entity {
             })
             y += moves;
         }
-        this.pos[1] = y;
-        this.lastMoved = ts;
-        this.justMoved = this.framesLeft === 0 ? true : false;
     }
 
     moveX(ts, dir, level, _fDead){
@@ -140,9 +143,6 @@ export default class Player extends Entity {
             })
             x += moves;
         }
-        this.pos[0] = x;
-        this.lastMoved = ts;
-        this.justMoved = this.framesLeft === 0 ? true : false;
     }
 
     update(dt, frameID){
