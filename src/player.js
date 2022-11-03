@@ -110,38 +110,48 @@ export default class Player extends Entity {
     }
 
     moveY(ts, dir, level, _fDead){
-        let moves = dir === "u" ? -1 : 1;
-        let y = this.pos[1];
-        let enemyStationary = level.enemies.filter(e => e.nametag.match(/[0-9]/g))
-        // console.log(enemyStationary)
-        while(this.grid[y + moves][this.pos[0]].nametag !== "Wall" && y < this.grid.length - 1 && y > 0){
-            this.coinRefs.map(c => c.playerOnMe([this.pos[0], y]));
-            enemyStationary.forEach((e, index) => {
-                if (e.pos[0] === this.pos[0] && e.pos[1] === y){
-                    console.log("dead 2")
-                    _fDead();
-                }
-
-            })
-            y += moves;
+        if(ts > this.lastMoved + this.cooldown) {
+            this.justMoved = true;
+            let moves = dir === "u" ? -1 : 1;
+            let y = this.pos[1];
+            let enemyStationary = level.enemies.filter(e => e.nametag.match(/[0-9]/g))
+            // console.log(enemyStationary)
+            while(this.grid[y + moves][this.pos[0]].nametag !== "Wall" && y < this.grid.length - 1 && y > 0){
+                this.coinRefs.map(c => c.playerOnMe([this.pos[0], y]));
+                enemyStationary.forEach((e, index) => {
+                    if (e.pos[0] === this.pos[0] && e.pos[1] === y){
+                        console.log("dead 2")
+                        _fDead();
+                    }
+    
+                })
+                y += moves;
+            }
+            this.pos[1] = y;
+            this.lastMoved = ts;
         }
     }
 
     moveX(ts, dir, level, _fDead){
-        let moves = dir === "l" ? -1 : 1;
-        let x = this.pos[0];
-        let enemyStationary = level.enemies.filter(e => e.nametag.match(/[0-9]/g))
- 
-        while(this.grid[this.pos[1]][x + moves].nametag !== "Wall" && x < this.width - 1 && x > 0){
-            this.coinRefs.map(c => c.playerOnMe([x, this.pos[1]]));
-            enemyStationary.forEach((e, index) => {
-                if (e.pos[0] === x && e.pos[1] === this.pos[1]){
-                    console.log("dead 2")
-                    _fDead();
-                }
+        if(ts > this.lastMoved + this.cooldown) {
+            this.justMoved = true;
+            let moves = dir === "l" ? -1 : 1;
+            let x = this.pos[0];
+            let enemyStationary = level.enemies.filter(e => e.nametag.match(/[0-9]/g))
+    
+            while(this.grid[this.pos[1]][x + moves].nametag !== "Wall" && x < this.width - 1 && x > 0){
+                this.coinRefs.map(c => c.playerOnMe([x, this.pos[1]]));
+                enemyStationary.forEach((e, index) => {
+                    if (e.pos[0] === x && e.pos[1] === this.pos[1]){
+                        console.log("dead 2")
+                        _fDead();
+                    }
 
-            })
-            x += moves;
+                })
+                x += moves;
+            }
+            this.pos[0] = x;
+            this.lastMoved = ts;
         }
     }
 

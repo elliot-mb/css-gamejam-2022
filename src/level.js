@@ -17,7 +17,7 @@ export default class Level{
     //     levels[] //level files 
     //     tiles[] //array of tiles 
 
-    constructor(_player, _deathCallback, _winCallback, _keysPressed){
+    constructor(_player, _deathCallback, _winCallback){
         this.levels = []; // array of json level objects e.g. [{["levelID":0, "levelMatrix":["#####","####0", ...]}, {....}]
         this.tiles  = [];
         this.enemies = [];
@@ -26,7 +26,6 @@ export default class Level{
 
         this.deathCallback = _deathCallback; //function that does cool things (tells main to change state to death)
         this.winCallback = _winCallback;
-        this.keysPressed = _keysPressed;
 
         this.currLevel = 0;
         this.player = _player;
@@ -252,13 +251,12 @@ export default class Level{
 
     incLevel(ctx){
         console.log(this.currLevel);
-        if(this.currLevel > 1) { 
+        if(this.currLevel > this.levels.length) { 
             console.log("END!");
             return this.winCallback(); 
         }
         //this.player.reset([this.playerStart[this.currLevel].x, this.playerStart[this.currLevel].y]);
         this.player.resetPos([this.playerStart[this.currLevel].x, this.playerStart[this.currLevel].y]);
-        this.keysPressed = {};
         this.currLevel += 1;
         this.resetForLoad();
         this.unpack(ctx);
@@ -291,8 +289,8 @@ export default class Level{
             if (timeElapsed < this.barDurations[e.nametag] && e.colourCount <= 254){
 
                 e.visible = true;
-                e.colourCount += 1;
-                e.colour = e.colourCount.toString(16);
+                e.colourCount += 0.5;
+                e.colour = Math.floor(e.colourCount).toString(16);
                 e.dead = false;
 
             } else{

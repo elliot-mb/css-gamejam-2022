@@ -1,3 +1,4 @@
+import Animator from "./animator.js";
 import Hotbar from "./hotbar.js";
 
 export default class UI{
@@ -9,6 +10,12 @@ export default class UI{
             h3: '50px sans-serif',
             h4: '35px sans-serif'
         }
+
+        this.menuPic = () => {
+            const i = new Image();
+            i.src = '../img/title.png';
+            return i;
+        };
 
         this.hotbar = new Hotbar(
             {
@@ -26,9 +33,9 @@ export default class UI{
         this.layout = (c) => {
             c.fillStyle = "#0ff";
             c.font = this.header.h3;
-            c.fillText(`Health ${""}`, 10, 50);
-            c.fillText(`Corruption ${""}`, 425, 50);
-            c.fillText(`$${this.getCoins()}`, 1025, 50);
+            c.fillText(`Health: ${""}`, 10, 50);
+            c.fillText(`Corruption: ${""}`, 425, 50);
+            c.fillText(`Bug Bucks: ₿${this.getCoins()}`, 1025, 50);
             c.font = this.header.h4;
             c.fillText("<- Backspace to abandon run", 10, 1070);
             // this.hotbar.update(dt,frameID);
@@ -53,6 +60,7 @@ export default class UI{
     toMenu(){
         // show menu
         this.layout = (c) => {
+            c.drawImage(this.menuPic(), 0, 0);
             c.fillStyle = "#fff";
             c.font = this.header.h1;
             c.fillText("Cyber Snail", 40, 150);
@@ -76,7 +84,17 @@ export default class UI{
         };
     }
 
-    toWin(){}
+    toWin(){
+        this.layout = (c) => {
+            c.fillStyle = "#fff";
+            c.font = this.header.h1;
+            c.fillText("You Win! :)", 40, 150);
+            c.font = this.header.h2;
+            c.fillText(`Bug Bucks: ₿${this.getCoins()}`, 50, 250);
+            c.font = this.header.h4;
+            c.fillText("<- Backspace to return to menu", 40, 325);
+        };
+    }
 
     update(){
 

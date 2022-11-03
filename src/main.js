@@ -72,21 +72,28 @@ let fsm = new StateMachine({
     }
 });
 
+let level = new Level(player, 
+    () => { try { fsm.lose(); } catch {}},
+    () => { try { fsm.win(); } catch {}}
+);
+await level.parseLevel();
+level.unpack(ctx);
+
 let keyListener = {
     pressed: {}, //set of pressed keys
     methods: {
         "a": (ts) => { //some methods take timestamp so all methods take timestamp
-            if(fsm.state === "game") { player.moveX(ts, "l"); }
+            if(fsm.state === "game") { player.moveX(ts, "l", level, () => { try { fsm.lose(); } catch {}}); }
         },
         "d": (ts) => {
-            if(fsm.state === "game") {  player.moveX(ts, "r"); }
+            if(fsm.state === "game") {  player.moveX(ts, "r", level,() => { try { fsm.lose(); } catch {}} ); }
         },
         "s": (ts) => {
-            if(fsm.state === "game") { player.moveY(ts, "d"); }
+            if(fsm.state === "game") { player.moveY(ts, "d", level,() => { try { fsm.lose(); } catch {}} ); }
             try { fsm.visit(); } catch { }
         },
         "w": (ts) => {
-            if(fsm.state === "game") { player.moveY(ts, "u"); }
+            if(fsm.state === "game") { player.moveY(ts, "u", level,() => { try { fsm.lose(); } catch {}} ); }
         },
         " ": (ts) => { 
             
@@ -109,14 +116,6 @@ let keyListener = {
         }
     }
 };
-
-let level = new Level(player, 
-    () => { try { fsm.lose(); } catch {}},
-    () => { try { fsm.win(); } catch {}},
-    keyListener.pressed
-);
-await level.parseLevel();
-level.unpack(ctx);
 
 document.body.addEventListener("keydown", (e) => {
     keyListener.pressed[e.key] = true;
