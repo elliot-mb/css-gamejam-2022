@@ -39,7 +39,7 @@ export default class Player extends Entity {
     constructor(_properties){
         super(_properties);
         this.lastMoved = 0;
-        this.cooldown = 100;
+        this.cooldown = 250;
         this.visualPos = [0,0];
         this.interp = 2;
         
@@ -60,9 +60,15 @@ export default class Player extends Entity {
         this.coins = 0;
     }
 
-    reset(){
+    reset(_pos){
+        
+ 
         this.coins = 0;
         this.coinRefs = [];
+    }
+
+    resetPos(_pos){
+        this.pos = _pos;
     }
 
     setPos(_pos){
@@ -104,28 +110,34 @@ export default class Player extends Entity {
     }
 
     moveY(ts, dir){
-        let moves = dir === "u" ? -1 : 1;
-        let y = this.pos[1];
-        while(this.grid[y + moves][this.pos[0]].nametag !== "Wall" && y < this.grid.length - 1 && y > 0){
-            this.coinRefs.map(c => c.playerOnMe([this.pos[0], y]));
-            y += moves;
+        if(ts > this.lastMoved + this.cooldown){
+            let moves = dir === "u" ? -1 : 1;
+            let y = this.pos[1];
+            while((this.grid[y + moves][this.pos[0]].nametag !== "Wall") && y < this.grid.length - 1 && y > 0){
+                this.coinRefs.map(c => c.playerOnMe([this.pos[0], y]));
+                y += moves;
+            }
+            this.pos[1] = y;
+            this.lastMoved = ts;
+            this.justMoved = this.framesLeft === 0 ? true : false;
+            this.lastMoved = ts;
         }
-        this.pos[1] = y;
-        this.lastMoved = ts;
-        this.justMoved = this.framesLeft === 0 ? true : false;
     }
 
     moveX(ts, dir){
-        let moves = dir === "l" ? -1 : 1;
-        let x = this.pos[0];
- 
-        while(this.grid[this.pos[1]][x + moves].nametag !== "Wall" && x < this.width - 1 && x > 0){
-            this.coinRefs.map(c => c.playerOnMe([x, this.pos[1]]));
-            x += moves;
+        if(ts > this.lastMoved + this.cooldown){
+            let moves = dir === "l" ? -1 : 1;
+            let x = this.pos[0];
+    
+            while((this.grid[this.pos[1]][x + moves].nametag !== "Wall") && x < this.width - 1 && x > 0){
+                this.coinRefs.map(c => c.playerOnMe([x, this.pos[1]]));
+                x += moves;
+            }
+            this.pos[0] = x;
+            this.lastMoved = ts;
+            this.justMoved = this.framesLeft === 0 ? true : false;
+            this.lastMoved = ts;
         }
-        this.pos[0] = x;
-        this.lastMoved = ts;
-        this.justMoved = this.framesLeft === 0 ? true : false;
     }
 
     update(dt, frameID){
