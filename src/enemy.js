@@ -30,13 +30,15 @@ const staggerFrames = 15; //Number of gameFrames between updates
 import Entity from "./entity.js";
 
 export default class Enemy extends Entity {
-    constructor(_properties){
+    constructor(_properties, _colour){
         super(_properties);
+        this.colour = _colour;
         // this.speed = Math.random() * 3 + 0
     }
 
-    draw(c){
+    draw(ctx){
         // c.fillStyle = this.visible ? (this.nametag === "Enemy0" ? "#F00" : "#0000" ) : "#0000";
+
         if (this.visible){
             switch(this.nametag){
                 case("Enemy0"):
@@ -46,6 +48,7 @@ export default class Enemy extends Entity {
         }
 
         c.fillRect((this.pos[0] * this.scale)  + this.xOff, (this.pos[1] * this.scale) + this.yOff, this.scale, this.scale);
+
     }
 }
 

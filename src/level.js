@@ -10,6 +10,7 @@ import Tile from "./tile.js";
 import { INITIAL_HEIGHT, INITIAL_WIDTH } from "./main.js";
 import Enemy from "./enemy.js";
 import barEnemy from "./barEnemy.js";
+import Coin from "./coin.js";
 
 export default class Level{
     // props:
@@ -111,7 +112,7 @@ export default class Level{
                         tiles.push(this.player);
                         break;
                     case 'D':
-                        console.log(`recognises D`);
+
                         entityProp ={
                                         "nametag":"End", 
                                         "pos":[x,y], 
@@ -123,12 +124,12 @@ export default class Level{
                                         "xOff":offset[0],
                                         "yOff":offset[1]
                                     };
-                        t = new Tile(entityProp);
+                        t = new Tile(entityProp, "#2f2", undefined);
                         tiles.push(t)
                         this.player.setEnd([x,y]);
                         break;
                     case '#':
-                        console.log(`recognises #`);
+
                         entityProp ={
                                         "nametag":"Wall", 
                                         "pos":[x,y], 
@@ -140,11 +141,11 @@ export default class Level{
                                         "xOff":offset[0],
                                         "yOff":offset[1]
                                     };
-                        t = new Tile(entityProp);
+                        t = new Tile(entityProp, "#222", undefined);
                         tiles.push(t)
                         break;
                     case `p`:
-                        console.log(`recognises p`);
+
                         entityProp ={
                                         "nametag":"Path", 
                                         "pos":[x,y], 
@@ -156,8 +157,29 @@ export default class Level{
                                         "xOff":offset[0],
                                         "yOff":offset[1]
                                     };
-                        t = new Tile(entityProp);
+                        t = new Tile(entityProp, "#0000", undefined);
                         tiles.push(t);
+                        break;
+                    case '@':
+                        let coin = new Coin(
+                            {
+                                "nametag":"Coin",
+                                "pos":[x,y],
+                                "visible":true,
+                                "collides":true,
+                                "ctx":ctx,
+                                "scale":scale,
+                                "xOff":offset[0],
+                                "yOff":offset[1]
+                            },
+                            "#aa0",
+                            () => {
+                                return this.player.pos;
+                            },
+                            () => {this.player.addCoins(1);}
+                        );
+                        tiles.push(coin);
+                        this.player.addCoinRef(coin);
                         break;
                     default:
                         if (entity.match(/[A-Z]/g)){
@@ -204,7 +226,7 @@ export default class Level{
                                     "xOff":offset[0],
                                     "yOff":offset[1]
                                 };
-                                let enemy = new Enemy(entityProp);
+                                let enemy = new Enemy(entityProp, "#f22");
                                 tiles.push(enemy);
                                 this.enemies.push(enemy);
                                 
@@ -235,6 +257,7 @@ export default class Level{
     resLevel(ctx){
         this.currLevel = 0;
         this.resetForLoad();
+        this.player.reset();
         this.unpack(ctx);
     }
     //     update() //updates level
@@ -285,14 +308,12 @@ export default class Level{
 
         })
 
-        
-
-        this.barEnemies
+    
     }
 
     draw(c){
         this.tiles.map(x => { x.map(y => {
-            if(y.nametag !== "Ant") y.draw(c);
+            if(y.nametag !== "Ant" && y.nametag !== "Coin") y.draw(c);
         }); });
         //this.player.draw(c);
 

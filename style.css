@@ -15,6 +15,8 @@ html, body{
 canvas{
     position: absolute; 
     width: calc(min(100vw/16, 100vh/9) * 16);   /* 16:9 canvas resolution ratio */
+
+
 }
 
 .hide{
