@@ -133,7 +133,7 @@ const makeFrame = (timestamp) => {
     
     background.draw();
     keyListener.update(timestamp);
-    level.tiles.map(r => r.map(t => t.update(frameID)));
+    //level.tiles.map(r => r.map(t => t.update(frameID)));
     //animator.update(frameID);
 
     if (fsm.state === "game"){

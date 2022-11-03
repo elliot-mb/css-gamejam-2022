@@ -32,9 +32,9 @@ export const characters = {
         },
         //moves
         wait: {
+            stagger: 2,
             row: 0,
             frames: 4,
-            stagger: 10
         },
     },
     coin: {
@@ -46,7 +46,7 @@ export const characters = {
         },
         //modes
         idle: {
-            stagger: 20,
+            stagger: 10,
             row: 0,
             frames: 4
         },
@@ -79,8 +79,7 @@ export const characters = {
         idle: {
             stagger: 30,
             row: 0,
-            frames: 5
-
+            frames: 4
         }
     }
     //other characters like enemies 
@@ -100,6 +99,11 @@ export default class Animator{
         }
 
         this.update(0);
+    }
+
+    set(f){
+        this.frame = f;
+        this.cropping = this.cropOnFrame(f);
     }
 
     reset(){ 

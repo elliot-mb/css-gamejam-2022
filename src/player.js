@@ -50,6 +50,7 @@ export default class Player extends Entity {
 
         //properties defined after level is passed
         this.grid;
+        this.width;
         this.end;
         this.progress;
         this.levelDims;
@@ -70,6 +71,7 @@ export default class Player extends Entity {
 
     setGrid(_grid){
         this.grid = _grid;
+        this.width = this.grid.map(row => row.length).reduce((x, y) => Math.max(x,y), 0);
     }
 
     setEnd(_end){
@@ -117,7 +119,7 @@ export default class Player extends Entity {
         let moves = dir === "l" ? -1 : 1;
         let x = this.pos[0];
  
-        while(this.grid[this.pos[1]][x + moves].nametag !== "Wall" && x < this.grid[0].length - 1 && x > 0){
+        while(this.grid[this.pos[1]][x + moves].nametag !== "Wall" && x < this.width - 1 && x > 0){
             this.coinRefs.map(c => c.playerOnMe([x, this.pos[1]]));
             x += moves;
         }

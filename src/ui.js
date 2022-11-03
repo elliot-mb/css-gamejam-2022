@@ -24,7 +24,7 @@ export default class UI{
     toPlay(){
         // show hearts and corrupt bar
         this.layout = (c) => {
-            c.fillStyle = "#99f";
+            c.fillStyle = "#0ff";
             c.font = this.header.h3;
             c.fillText(`Health ${""}`, 10, 50);
             c.fillText(`Corruption ${""}`, 425, 50);
@@ -33,7 +33,7 @@ export default class UI{
             c.fillText("<- Backspace to abandon run", 10, 1070);
             // this.hotbar.update(dt,frameID);
             // this.hotbar.draw(c);
-            c.fillText("HOTBAR", 960, 1080);
+            //c.fillText("HOTBAR", 960, 1080);
         }
     }
 
@@ -55,7 +55,7 @@ export default class UI{
         this.layout = (c) => {
             c.fillStyle = "#fff";
             c.font = this.header.h1;
-            c.fillText("Bugger!", 40, 150);
+            c.fillText("Cyber Snail", 40, 150);
             c.font = this.header.h2;
             c.fillText("Menu", 75, 300);
             c.font = this.header.h4;
