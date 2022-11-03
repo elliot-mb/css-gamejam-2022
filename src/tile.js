@@ -26,10 +26,11 @@ export default class Tile extends Entity {
         super(_properties);
         this.colour = _colour;
         this.animator = new Animator(characters.brick, characters.brick.idle);
+        this.animator.set(Math.round(Math.random() * characters.brick.idle.frames));
     }
 
     update(frameID){
-        this.animator.update(frameID);
+        //this.animator.update(frameID);
     }
 
     draw(ctx){
