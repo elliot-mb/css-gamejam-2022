@@ -115,6 +115,8 @@ let background = {
 
 let dt = 0;
 let pt = 0;
+let randDuration = Math.floor(Math.random() * 3);
+
 
 const makeFrame = (timestamp) => {
     dt = timestamp - pt;
@@ -122,7 +124,8 @@ const makeFrame = (timestamp) => {
     
     background.draw();
     keyListener.update(timestamp);
-    level.update();
+    level.update(timestamp, randDuration);
+
 
     if (fsm.state === "game"){
         level.draw(c); 
