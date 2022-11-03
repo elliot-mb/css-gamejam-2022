@@ -22,7 +22,6 @@ export const characters = {
             frames: 4
         }
     },
-
     hotbar: {
         resolution: 32,
         image: () => { 
@@ -36,8 +35,8 @@ export const characters = {
             row: 0,
             frames: 4,
             stagger: 10
-            },
         },
+    },
     coin: {
         resolution: 32,
         image: () => {
@@ -47,7 +46,7 @@ export const characters = {
         },
         //modes
         idle: {
-            stagger: 10,
+            stagger: 20,
             row: 0,
             frames: 4
         },
@@ -86,10 +85,6 @@ export const characters = {
     }
     //other characters like enemies 
 };
-
-
-
-
 
 export default class Animator{
     constructor(_character, initMode){

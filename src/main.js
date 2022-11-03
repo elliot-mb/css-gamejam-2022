@@ -139,8 +139,8 @@ const makeFrame = (timestamp) => {
     if (fsm.state === "game"){
         level.draw(ctx); 
         if(dt){
-            ui.hotbar.update(dt,frameID);
-            ui.hotbar.draw(ctx);
+            //ui.hotbar.update(dt,frameID);
+            //ui.hotbar.draw(ctx);
             player.update(dt, frameID);
             player.draw(ctx, timestamp);
         }
