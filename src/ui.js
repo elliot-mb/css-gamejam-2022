@@ -13,7 +13,7 @@ export default class UI{
 
         this.menuPic = () => {
             const i = new Image();
-            i.src = '../img/title.png';
+            i.src = './img/title.png';
             return i;
         };
 
