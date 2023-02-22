@@ -12,7 +12,7 @@ export const characters = {
         image: () => { 
             // let b = await fetch('snail.png').then(r => r.blob());
             const i = new Image();
-            i.src = '../img/snail.png';
+            i.src = './img/snail.png';
             return i;
         },
         //modes
@@ -27,7 +27,7 @@ export const characters = {
         image: () => { 
             // let b = await fetch('snail.png').then(r => r.blob());
             const playerImage = new Image();
-            playerImage.src = '../img/snail.png';
+            playerImage.src = './img/snail.png';
             return playerImage;
         },
         //moves
@@ -41,7 +41,7 @@ export const characters = {
         resolution: 32,
         image: () => {
             const i = new Image();
-            i.src = '../img/coin.png';
+            i.src = './img/coin.png';
             return i;
         },
         //modes
@@ -60,7 +60,7 @@ export const characters = {
         resolution: 32,
         image: () => {
             const i = new Image();
-            i.src = '../img/rock.png';
+            i.src = './img/rock.png';
             return i;
         },
         idle: {
@@ -73,7 +73,7 @@ export const characters = {
         resolution: 32,
         image: () => {
             const i = new Image();
-            i.src = '../img/brick.png';
+            i.src = './img/brick.png';
             return i;
         },
         idle: {
