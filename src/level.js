@@ -199,7 +199,7 @@ export default class Level{
                             };
                             entityProp["visible"] = false;
                             if (this.barDurations[entityProp["nametag"]] === undefined){
-                                this.barDurations[entityProp["nametag"]] = Math.floor(Math.random() * 3000) + 1000
+                                this.barDurations[entityProp["nametag"]] = Math.floor(Math.random() * 3000) + 5000
                                 console.log(this.barDurations[entityProp["nametag"]])
                             }
                             let enemy = new barEnemy(entityProp);
