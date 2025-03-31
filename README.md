@@ -5,5 +5,14 @@ Pure JavaScript game as our entry for the Computer Science Society GameJam 2022.
 [Here!](https://pi.elliotmb.dev/static/fs/projects/css-gamejam-2022/)
 
 ## How to run the game 
+
+### Node
+
+```bash
+$ ./start_server # at repository root
+```
+
+### VSCode Extension
+
 Download and install **Live Server** on Visual Studio Code extensions. 
 Right-click the .html, and select **Open with Live Server**.
