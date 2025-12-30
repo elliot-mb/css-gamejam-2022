@@ -2,7 +2,7 @@
 Pure JavaScript game as our entry for the Computer Science Society GameJam 2022. We as a team of four worked almost continuously on this project for 36 hours, and produced a fully-functional MVP of our initial game idea after thorough planning, cooperation and communication. 
 
 ## Visit the deployment
-[Here!](https://pi.elliotmb.dev/static/fs/projects/css-gamejam-2022/)
+<!-- [Here!](https://pi.elliotmb.dev/static/fs/projects/css-gamejam-2022/) This link is now depricated; raspberry pi server is offline. -->
 
 ## How to run the game 
 
